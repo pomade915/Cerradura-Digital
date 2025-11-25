@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ingreso o Registro - Cuenta Google</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+  
+      <nav>
+        <a href="INICIO.html">Inicio</a>
+    </nav>
+  <div class="container">
+    <div class="form-toggle">
+      <input type="radio" name="form-tab" id="login-tab" checked>
+      <input type="radio" name="form-tab" id="register-tab">
+      
+      <div class="tabs">
+        <label for="login-tab" class="tab">Iniciar sesión</label>
+        <label for="register-tab" class="tab">Registrarse</label>
+      </div>
+
+      <!-- Formulario de Inicio de Sesión -->
+      <div class="form-panel login-panel">
+        <form action="login.php" method="post">
+          <h2>Iniciar sesión</h2>
+          <input type="email" name="email" placeholder="Correo electrónico" required>
+          <input type="password" name="password" placeholder="Contraseña" required>
+          <button type="submit">Ingresar</button>
+        </form>
+      </div>
+
+      <!-- Formulario de Registro -->
+      <div class="form-panel register-panel">
+       <form action="register.php" method="post">
+          <h2>Registrarse</h2>
+          <input type="text" name="name" placeholder="Nombre completo" required>
+          <input type="email" name="email" placeholder="Correo electrónico" required>
+          <input type="password" name="password" placeholder="Contraseña" required>
+          <input type="password" name="confirm" placeholder="Confirmar contraseña" required>
+          <button type="submit">Crear cuenta</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funcionamiento</title>
+    <link rel="stylesheet" href="style.css"> <!-- Enlace al archivo de estilos CSS -->
+    <link rel="stylesheet" href="responsive.css">
+	<!-- Fuente estilo Minecraft -->
+    <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
+
+    <style>
+      .titulo-efecto {
+        font-family: 'Minecraft', sans-serif !important;
+        text-transform: uppercase;
+        color: #000000 !important; /* Negro */
+        font-size: clamp(3rem, 6vw, 5rem); 
+        display: inline-block;
+        transform: scale(1.2);
+        animation: glowMove 3s infinite alternate ease-in-out;
+      }
+
+      @keyframes glowMove {
+        0% {
+          text-shadow: 
+            2px 2px 6px #8000ff,
+            0 0 12px #b266ff,
+            0 0 20px #cc66ff;
+        }
+        50% {
+          text-shadow: 
+            -2px -2px 8px #8000ff,
+            0 0 20px #b266ff,
+            0 0 30px #cc66ff;
+        }
+        100% {
+          text-shadow: 
+            2px -2px 10px #8000ff,
+            0 0 25px #b266ff,
+            0 0 40px #cc66ff;
+        }
+      }
+
+      /* 🔥 Estilo igual al menú de interacción anterior */
+      .inicio-efecto {
+        font-family: 'Minecraft', sans-serif !important;
+        text-transform: uppercase;
+        color: #fff; /* Blanco como en el menú */
+        font-size: 1rem; 
+        text-decoration: none;
+        transition: 0.3s ease-in-out;
+        text-shadow: 
+          0 0 5px #a64dff,
+          0 0 10px #a64dff,
+          0 0 20px #a64dff;
+      }
+
+      .inicio-efecto:hover {
+        color: #e0b3ff;
+        text-shadow: 
+          0 0 10px #a64dff,
+          0 0 20px #a64dff,
+          0 0 30px #cc66ff;
+      }
+
+      /* ===== Estilos tipo "libro" ===== */
+      .bloque {
+        padding: 18px 0;
+      }
+
+      .bloque .columna-libro {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 0 22px;
+        box-sizing: border-box;
+      }
+
+      .columna-libro p {
+        text-align: justify;
+        line-height: 1.7;
+        margin: 0 0 18px 0;
+        text-indent: 1.2em;
+        color: #2e1b3a;
+        font-size: 1.05rem;
+      }
+
+      /* Listas alineadas correctamente */
+      .columna-libro ul,
+      .columna-libro ol {
+        margin: 0 0 18px 1.4rem;
+        padding-left: 1.2rem;
+        text-align: left;
+      }
+
+      .columna-libro li {
+        margin-bottom: 10px;
+        line-height: 1.6;
+        text-align: left;
+      }
+
+      .columna-libro ul li ul,
+      .columna-libro ol li ul {
+        margin-top: 8px;
+        margin-bottom: 8px;
+        padding-left: 1.0rem;
+      }
+
+      .columna-libro > ol {
+        margin-top: 12px;
+        padding-left: 1.2rem;
+      }
+
+      .imagen-destacada img {
+        display: block;
+        max-width: 95%;
+        height: auto;
+        margin: 18px auto;
+      }
+
+      h2.titulo-efecto {
+        margin: 18px 0;
+      }
+    </style>
+</head>
+<body style="
+    margin:0;
+    font-family:'Segoe UI', Tahoma, sans-serif;
+    background-image:url('imagenes/fondo\ 2.png');
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-position:center center;
+    background-attachment:fixed;
+">
+    <nav>
+        <a href="INICIO.html" class="inicio-efecto">Inicio</a>
+    </nav>
+
+    <!-- FUNCIONAMIENTO -->
+    <section id="Funcionamiento" class="bloque">
+        <h2 class="titulo-efecto">Funcionamiento del Sistema</h2>
+
+        <div class="columna-libro">
+
+          <ol>
+              <li>El usuario debe autenticarse mediante al menos dos de los siguientes métodos:
+                  <ul>
+                      <li>Huella digital</li>
+                      <li>Tarjeta RFID</li>
+                      <li>Código numérico</li>
+                  </ul>
+              </li>
+              <li>La caja se abrirá únicamente si dos métodos son validados correctamente.</li>
+              <li>El sistema rechaza accesos incorrectos o incompletos.</li>
+              <li>Puede incluir registro de intentos fallidos para mayor seguridad.</li>
+          </ol>
+
+          <p>
+            Una cerradura digital es un sistema diseñado para controlar el acceso a un espacio sin requerir de una llave física, ya que su funcionamiento está digitalizado.
+            Esto significa que funciona mediante diferentes tecnologías electrónicas para permitir o denegar el acceso. Este tipo de cerraduras no necesitan mecanismos físicos para su funcionamiento,
+            sino que dependen de un proceso de software y sensores para validar la identidad de una persona.
+          </p>
+
+          <p>Existen diferentes tipos de métodos de autenticación digitalizados, los más comunes son:</p>
+
+          <ul>
+            <li>Código Numérico, basado en el ingreso de una clave.</li>
+            <li>Sensor Biométrico, basado en reconocimiento físico de la persona.</li>
+            <li>Identificación de radiofrecuencia (RFID), utilizado comúnmente con tarjetas o llaveros.</li>
+          </ul>
+
+          <p>La funcionalidad básica de una cerradura digital consiste en tres etapas:</p>
+
+          <ol>
+            <li><strong>Entrada:</strong> La misma se basa en el ingreso de datos de parte del usuario hacia el mecanismo.</li>
+            <li><strong>Procesador:</strong> Se encarga de corroborar los datos ingresados mediante un microcontrolador como Arduino y verifica su veracidad comparándolos con los datos anteriormente guardados en el sistema.</li>
+            <li><strong>Cierre:</strong> Se encarga de activarse si el método de autenticación es válido, provocando la apertura de la cerradura.</li>
+          </ol>
+
+          <p>El objetivo principal de una cerradura es garantizar la seguridad del acceso a un espacio.</p>
+
+        </div>
+    </section>
+
+    <!-- ESQUEMA -->
+    <section class="imagen-destacada bloque">
+        <h2 class="titulo-efecto">Esquema del Sistema</h2>
+        <img src="imagenes/ESQUEMA.PNG" alt="Esquema del sistema de seguridad">
+    </section>
+</body>
+</html>

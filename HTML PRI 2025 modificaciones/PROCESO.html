@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Explicacion del Proceso</title>
+  <link rel="stylesheet" href="responsive.css">
+  <!-- Fuente estilo Minecraft -->
+  <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
+
+  <style>
+    :root{
+      --cream: #fff8dc;
+      --violet: rgba(178,102,255,0.95);
+      --bg-dark: rgba(8,8,8,0.96);
+
+      /* Cambia aquí el tamaño global de las burbujas/fotos (ej: 220px, 260px, 180px) */
+      --bubble-h: 220px;
+      --page-max: 1100px;
+      --page-padding-x: 18px;
+    }
+
+    /* Reset sencillo */
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-image: url('imagenes/fondo 3.webp');
+      background-repeat:no-repeat;
+      background-size:cover;
+      background-position:center center;
+      background-attachment: fixed;
+      color: rgba(0,0,0,0.88);
+    }
+
+    /* NAV: ahora la burbuja negra tiene la misma anchura máxima que .page */
+    nav{
+      text-align:center;
+      padding:18px 10px;
+    }
+
+    .nav-bubble{
+      display:block;                       /* ocupar ancho y poder centrar con max-width */
+      width: calc(100% - (2 * var(--page-padding-x)));
+      max-width: var(--page-max);
+      margin: 0 auto;                      /* centrado igual que .page */
+      padding:6px 22px;
+      border-radius:15px;
+      background: var(--bg-dark);
+      border:3px solid var(--violet);
+      box-shadow:
+        0 12px 36px rgba(0,0,0,0.55),
+        0 0 40px rgba(178,102,255,0.06),
+        inset 0 3px 10px rgba(255,255,255,0.02);
+      box-sizing: border-box;
+    }
+    .nav-bubble a{
+      font-family:'Minecraft',sans-serif;
+      text-transform:uppercase;
+      color:#fff;
+      text-decoration:none;
+      padding:4px 8px;
+      letter-spacing:1px;
+      text-shadow:
+        0 0 10px rgba(166,77,255,0.98),
+        0 0 28px rgba(128,0,255,0.85),
+        0 0 60px rgba(204,102,255,0.55);
+      display:inline-block;
+    }
+
+    /* PAGE WRAPPER */
+    .page {
+      max-width: var(--page-max);
+      margin: 26px auto 60px;
+      padding: 0 var(--page-padding-x);
+      box-sizing: border-box;
+    }
+
+    /* TITULO PRINCIPAL (sin acento en 'INFORMACION') */
+    .title-bubble {
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 20px 26px;
+      border: 3px solid var(--violet);
+      text-align: center;
+      margin-bottom: 30px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+
+    .page-title {
+      font-family: 'Minecraft', sans-serif;
+      font-size: 2.1rem;
+      color: #000;
+      margin: 0;
+      text-transform: uppercase;
+      /* brillo violeta animado (como en INICIO) */
+      text-shadow:
+        0 0 10px rgba(178,102,255,0.75),
+        0 0 25px rgba(128,0,255,0.55),
+        0 0 45px rgba(204,102,255,0.35);
+      animation: glowMove 2.4s infinite alternate;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    @keyframes glowMove {
+      0%{
+        text-shadow:
+          0 0 6px rgba(178,102,255,0.55),
+          0 0 14px rgba(128,0,255,0.45),
+          0 0 30px rgba(204,102,255,0.25);
+      }
+      100%{
+        text-shadow:
+          0 0 18px rgba(178,102,255,0.95),
+          0 0 36px rgba(128,0,255,0.75),
+          0 0 60px rgba(204,102,255,0.45);
+      }
+    }
+
+    /* STEPS: cada fila (informacion + foto) */
+    .steps {
+      display:flex;
+      flex-direction:column;
+      gap: 32px;
+    }
+
+    .step {
+      display:flex;
+      gap:20px;
+      align-items: stretch; /* importante para alinear alturas */
+      width:100%;
+    }
+
+    /* Usamos la variable --bubble-h para definir altura de ambos elementos */
+    .info {
+      flex:1;
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 16px 20px 20px 20px;
+      border: 3px solid var(--violet);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start; /* <- título arriba */
+      height: var(--bubble-h);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Heading dentro de info: MÁS ARRIBA, MÁS GRANDE y con efecto violeta animado */
+    .info h3{
+      font-family:'Minecraft', sans-serif;
+      font-size:1.6rem;           /* más grande */
+      margin: 0 0 12px 0;        /* ahora pegado arriba dentro de la burbuja */
+      color:#000;
+      text-transform:uppercase;
+      letter-spacing:0.6px;
+      /* brillo violeta animado en el título (igual que otros) */
+      text-shadow:
+        0 0 10px rgba(166,77,255,0.7),
+        0 0 24px rgba(128,0,255,0.55),
+        0 0 40px rgba(204,102,255,0.32);
+      animation: glowMove 2.4s infinite alternate;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .info p{
+      margin:0;
+      line-height:1.6;
+      color: rgba(0,0,0,0.86);
+    }
+
+    /* photo bubble (derecha): img-wrap usa la misma altura que .info */
+    .photo {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      /* ancho automático, ocupa el tamaño del img-wrap */
+    }
+
+    .photo .img-wrap{
+      width: var(--bubble-h);
+      height: var(--bubble-h);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+      border: 8px solid var(--cream); /* blanco interior */
+      box-shadow:
+        0 8px 20px rgba(0,0,0,0.33),
+        0 0 8px rgba(178,102,255,0.12); /* sutil halo violeta */
+      display:block;
+      box-sizing: border-box; /* incluye bordes en la medida, así coincide exactamente con --bubble-h */
+    }
+
+    .photo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    /* Responsive: en pantallas más chicas apilamos y reducimos tamaños (cambiamos la variable) */
+    @media (max-width:900px){
+      :root{ --bubble-h: 160px; } /* cambia variable para todo el layout */
+      .step { flex-direction: column-reverse; gap: 14px; align-items: stretch; }
+      .photo { justify-content:flex-start; }
+      .page-title { font-size: 1.8rem; }
+      .page { padding: 0 12px; }
+      .info h3 { font-size: 1.25rem; margin: 0 0 10px 0; }
+      .nav-bubble { width: calc(100% - 24px); } /* ajustar a padding en pantallas pequeñas */
+    }
+
+    /* ajustes extra para móviles muy pequeños */
+    @media (max-width:480px){
+      :root{ --bubble-h: 140px; }
+      .page-title { font-size: 1.4rem; }
+      .info h3 { font-size: 1.15rem; margin: 0 0 8px 0; }
+    }
+
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-bubble"><a href="INICIO.html">Inicio</a></div>
+  </nav>
+
+  <div class="page">
+    <!-- TITULO (sin acento en INFORMACION) -->
+    <div class="title-bubble">
+      <h1 class="page-title">INFORMACION DEL PROCESO</h1>
+    </div>
+
+    <!-- LISTADO DE PASOS: cada .step contiene .info (izq) y .photo (der) -->
+    <div class="steps">
+
+      <div class="step">
+        <div class="info">
+          <h3>PASO 1</h3>
+          <p>
+            Cortamos el cartón a medida y lo reforzamos aplicando una doble capa con pistola de silicona para aumentar su grosor y resistencia. A continuación, unimos las piezas de cartón para conformar la estructura del cofre.
+          </p>
+        </div>
+
+        <div class="photo">
+          <div class="img-wrap" aria-hidden="true">
+            <img src="imagenes/CAJA3.jpeg" alt="Paso 1">
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="info">
+          <h3>PASO 2</h3>
+          <p>
+            Cubrimos los bordes de la caja con papel madera para ocultar los cantos cortados y mejorar el acabado. Paralelamente, definimos la paleta de colores que emplearemos para pintar la caja.
+          </p>
+        </div>
+
+        <div class="photo">
+          <div class="img-wrap" aria-hidden="true">
+            <img src="imagenes/CAJA4.jpeg" alt="Paso 2">
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="info">
+          <h3>PASO 3</h3>
+          <p>
+            Completamos el revestimiento de los bordes con papel madera, confirmamos los colores definitivos para la pintura y colocamos la cerradura del cofre (rectángulo amarillo), la cual habíamos dejado sin fijar por motivos de comodidad durante el ensamblaje.
+          </p>
+        </div>
+
+        <div class="photo">
+          <div class="img-wrap" aria-hidden="true">
+            <img src="imagenes/CAJA2.jpeg" alt="Paso 3">
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="info">
+          <h3>PASO 4</h3>
+          <p>
+            Marcamos la superficie del cofre con pequeños cuadrados identificados por letras; a cada letra le asignamos un color, lo que nos permite pintar el cofre de forma ordenada. A continuación iniciamos el proceso de pintado.
+          </p>
+        </div>
+
+        <div class="photo">
+          <div class="img-wrap" aria-hidden="true">
+            <img src="imagenes/CAJA1.jpeg" alt="Paso 4">
+          </div>
+        </div>
+      </div>
+
+      <!-- PASO 5 actualizado según tu texto (formalizado levemente) -->
+      <div class="step">
+        <div class="info">
+          <h3>PASO 5</h3>
+          <p>
+            Terminamos casi por completo el pintado de la caja y comenzamos a evaluar y determinar la ubicación de los componentes electrónicos como el arduino, lector de tarjeta,pantalla lcd etc,que permitirán el correcto funcionamiento del cofre.
+          </p>
+        </div>
+
+        <div class="photo">
+          <div class="img-wrap" aria-hidden="true">
+            <img src="imagenes/CAJA5.jpg" alt="Paso 5">
+          </div>
+        </div>
+      </div>
+
+      <!-- PASO 6 agregado según tu indicación: misma estructura, solo foto y número de paso cambiados -->
+      <div class="step">
+        <div class="info">
+          <h3>PASO 6</h3>
+          <p>
+            Terminamos de pintar la caja fuerte y ensamblamos todos los componentes electrónicos, de modo que la caja funciona correctamente y puede utilizarse a voluntad, disponiendo de sus distintas formas de apertura y pudiendo bloquearse y desbloquearse cuando sea requerido.
+          </p>
+        </div>
+
+        <div class="photo">
+          <div class="img-wrap" aria-hidden="true">
+            <img src="imagenes/CAJA6.jpeg" alt="Paso 6">
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- /.steps -->
+  </div> <!-- /.page -->
+</body>
+</html>
