@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Redirigiendo…</title>
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; 
+           display:flex; align-items:center; justify-content:center; min-height:100vh;
+           margin:0; background:#fff; color:#111; padding:20px; box-sizing:border-box; }
+    .box { max-width:720px; text-align:center; }
+    a { color: #0b66ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    small { color:#666; display:block; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Redirigiendo a la página de inicio…</h2>
+    <p>Si no se redirige automáticamente, seleccioná la opción correcta abajo.</p>
+    <div id="fallback" aria-live="polite">
+      <p><small>Comprobando archivos en el servidor…</small></p>
+    </div>
+  </div>
+
+  <script>
+    (async function(){
+      // Lista de posibles nombres / variantes que intentaremos detectar en orden preferido
+      const candidates = [
+        'INICIO.html',
+        'INICIO',
+        'inicio.html',
+        'Inicio.html',
+        'index.html', // por si alguien ya lo renombró
+        'inicio.htm'
+      ];
+
+      // Intentamos con HEAD para mayor rapidez. Si HEAD no está permitido, usamos GET.
+      async function exists(path) {
+        try {
+          // primero HEAD
+          let res = await fetch(path, { method: 'HEAD' });
+          if (res && (res.status === 200 || res.status === 0)) return true;
+          // si HEAD devuelve 405 o similar, intentamos GET (pero sin descargar cuerpo)
+          if (res && (res.status === 405 || res.status === 501)) {
+            let r2 = await fetch(path, { method: 'GET' });
+            return r2.ok;
+          }
+          return false;
+        } catch (e) {
+          // si fetch falla (CORS raro o bloqueo), devolvemos false
+          return false;
+        }
+      }
+
+      for (const c of candidates) {
+        if (await exists(c)) {
+          // redirigimos a la primera que exista
+          location.replace(c);
+          return;
+        }
+      }
+
+      // Si llegamos acá, no encontramos nada: mostramos los enlaces de fallback
+      const fallback = document.getElementById('fallback');
+      fallback.innerHTML = `
+        <p>No se encontró automáticamente la página de inicio. Probá manualmente estos enlaces:</p>
+        <ul style="text-align:left; max-width:360px; margin:0 auto;">
+          <li><a href="INICIO.html">INICIO.html</a></li>
+          <li><a href="INICIO">INICIO</a></li>
+          <li><a href="inicio.html">inicio.html</a></li>
+          <li><a href="Inicio.html">Inicio.html</a></li>
+          <li><a href="COMPONENTES.html">COMPONENTES.html</a> (ej.)</li>
+        </ul>
+        <p><small>Si sabés exactamente cómo se llama tu archivo de inicio, renamealo a <code>INICIO.html</code> o <code>inicio.html</code> para evitar problemas de mayúsculas/minúsculas.</small></p>
+      `;
+    })();
+  </script>
+</body>
+</html>
