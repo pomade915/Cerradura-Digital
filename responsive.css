@@ -1,11 +1,16 @@
 /* responsive.css
-   Solo layout / tamaños para móviles. No cambia colores ni efectos. */
+   Layout / tamaños para móviles (reemplazo completo).
+   Mantiene imágenes fluidas, navegación adaptable y
+   conserva la barra lateral hasta 700px (Option A).
+*/
 
 /* seguridad para móviles */
 html, body {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 /* imágenes: nunca desbordan y mantienen proporción */
@@ -28,16 +33,48 @@ img, .photo img {
 .page {
   padding-left: 12px !important;
   padding-right: 12px !important;
+  box-sizing: border-box;
 }
 
-/* Fuerza cajas fluidas: si tenés grid en escritorio, ponemos stack en móviles */
-@media (max-width: 980px) {
-  /* Si tu layout usa .content-grid con dos columnas, forzamos 1 columna */
+/* ===== Layout principal: mantener 2 columnas hasta 700px ===== */
+/* Reemplaza la regla .content-grid previa por esta */
+.content-grid {
+  max-width: 1200px;
+  margin: 18px auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr 360px; /* columna principal flexible + sidebar 360px */
+  gap: 24px;
+  align-items: start;
+}
+
+/* Ajustes para pantallas intermedias (tablets / pantallas estrechas) */
+@media (max-width: 900px) {
   .content-grid {
-    display: block !important;
+    grid-template-columns: 1fr 300px; /* reducimos un poco la sidebar */
+    gap: 18px;
   }
 
-  /* Columnas principales y laterales se vuelcan verticalmente */
+  /* ancho controlado de burbujas en la columna lateral */
+  .side-column .bubble {
+    width: 280px;
+    margin-left: 6px;
+    box-sizing: border-box;
+  }
+
+  /* pequeñas optimizaciones para evitar overflow */
+  .bubble .inner { max-width: 760px; }
+  .hero, .hero .inner { padding: 12px; }
+}
+
+/* Solo en pantallas pequeñas (móviles) hacemos stack — quiebre a 700px */
+@media (max-width: 700px) {
+  .content-grid {
+    grid-template-columns: 1fr; /* una columna (stack) */
+    gap: 14px;
+  }
+
   .main-column,
   .side-column {
     width: 100% !important;
@@ -52,10 +89,10 @@ img, .photo img {
     box-sizing: border-box;
   }
 
-  /* Steps: apilar info y foto */
+  /* Steps: apilar info y foto (foto arriba o abajo según preferencia) */
   .steps .step {
     display: flex !important;
-    flex-direction: column-reverse !important; /* foto arriba o abajo según preferencia */
+    flex-direction: column-reverse !important;
     gap: 12px !important;
     align-items: stretch !important;
   }
@@ -65,14 +102,16 @@ img, .photo img {
     height: auto !important;
     min-height: 120px;
     padding: 12px !important;
+    box-sizing: border-box;
   }
 
-  /* Foto: que ocupe ancho completo y mantenga aspecto cuadrado */
+  /* Foto: que ocupe ancho completo y mantenga aspecto cuadrado cuando sea posible */
   .photo .img-wrap {
     width: 100% !important;
     height: auto !important;
-    aspect-ratio: 1 / 1; /* mantiene proporción cuadrada en navegadores modernos */
-    border-width: 6px !important; /* escala visual del borde */
+    aspect-ratio: 1 / 1;
+    border-width: 6px !important;
+    box-sizing: border-box;
   }
 
   /* Títulos dentro de las burbujas más pequeños para móviles */
@@ -100,6 +139,12 @@ img, .photo img {
   .nav-bubble, .title-bubble, .bubble, .info, .photo .img-wrap {
     box-shadow: none !important;
   }
+
+  /* devolver padding cómodo y listas normales en móviles */
+  .bubble ul, .bubble ol {
+    padding-left: 18px;
+    list-style-position: outside;
+  }
 }
 
 /* Ajustes adicionales para pantallas muy pequeñas */
@@ -116,4 +161,23 @@ img, .photo img {
   .photo .img-wrap {
     border-width: 5px !important;
   }
+
+  /* Si hay scroll horizontal, prevenirlo forzando max-width en elementos principales */
+  .hero, .main-column, .side-column, .bubble {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}
+
+/* Pequeña ayuda: imágenes dentro de burbujas no deben exceder */
+.bubble img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Reparos: evita que títulos gigantes empujen layout en móviles */
+h1, h2, h3 {
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
