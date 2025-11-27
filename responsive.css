@@ -1,1 +1,243 @@
-/* responsive.css Reemplazo completo: layout / tamaños / mejoras móviles - Mantiene 2 columnas hasta 700px (Option A) - Mejora para landscape/portrait en móviles - Conserva imágenes fluidas, accesibilidad y evita scroll horizontal */ /* seguridad y reset pequeño para móviles */ html, body { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; box-sizing: border-box; margin: 0; padding: 0; max-width: 100%; overflow-x: hidden; } /* imágenes: nunca desbordan y mantienen proporción */ img, .photo img { max-width: 100%; height: auto; display: block; } /* nav / burbuja de navegación adaptable */ .nav-bubble { width: calc(100% - 24px) !important; max-width: 100% !important; padding-left: 12px !important; padding-right: 12px !important; box-sizing: border-box; } /* Page padding más cómodo en móviles */ .page { padding-left: 12px !important; padding-right: 12px !important; box-sizing: border-box; } /* ===== Layout principal: mantener 2 columnas hasta 700px ===== */ /* .content-grid: columna principal flexible + sidebar fija (desktop) */ .content-grid { max-width: 1200px; margin: 18px auto; padding: 0 20px; box-sizing: border-box; display: grid; grid-template-columns: 1fr 360px; /* contenido flexible + sidebar 360px */ gap: 24px; align-items: start; } /* Ajustes para pantallas intermedias (tablets / pantallas estrechas) */ @media (max-width: 900px) { .content-grid { grid-template-columns: 1fr 300px; /* reducimos sidebar */ gap: 18px; } .side-column .bubble { width: 280px; margin-left: 6px; box-sizing: border-box; } /* pequeñas optimizaciones para evitar overflow */ .bubble .inner { max-width: 760px; } .hero, .hero .inner { padding: 12px; } } /* Solo en pantallas pequeñas (móviles) hacemos stack — quiebre a 700px */ @media (max-width: 700px) { .content-grid { grid-template-columns: 1fr; /* una columna (stack) */ gap: 14px; } .main-column, .side-column { width: 100% !important; max-width: 100% !important; } .side-column .bubble, .bubble { width: 100% !important; margin-left: 0 !important; box-sizing: border-box; } .steps .step { display: flex !important; flex-direction: column-reverse !important; gap: 12px !important; align-items: stretch !important; } .info { height: auto !important; min-height: 120px; padding: 12px !important; box-sizing: border-box; } .photo .img-wrap { width: 100% !important; height: auto !important; aspect-ratio: 1 / 1; border-width: 6px !important; box-sizing: border-box; } .info h3, .page-title { font-size: clamp(1rem, 4.5vw, 1.4rem) !important; line-height: 1.1 !important; margin-bottom: 8px !important; } .info p, .bubble p { font-size: clamp(0.95rem, 3.6vw, 1rem) !important; } .nav-bubble a { display: inline-block; white-space: normal !important; padding-left: 8px !important; padding-right: 8px !important; } .nav-bubble, .title-bubble, .bubble, .info, .photo .img-wrap { box-shadow: none !important; } .bubble ul, .bubble ol { padding-left: 18px; list-style-position: outside; } } /* Ajustes para pantallas muy pequeñas */ @media (max-width: 480px) { .info h3 { font-size: 1rem !important; } .page-title { font-size: 1.15rem !important; } .nav-bubble { padding: 8px 10px !important; } .photo .img-wrap { border-width: 5px !important; } .hero, .main-column, .side-column, .bubble { max-width: 100%; overflow-x: hidden; } } /* Evita que imágenes dentro de burbujas excedan */ .bubble img { max-width: 100%; height: auto; display: block; } /* Evita títulos que rompan layout */ h1, h2, h3 { word-break: break-word; overflow-wrap: break-word; } /* =========================== PARCHE: mejoras para móviles (landscape / portrait) - mantiene 2 columnas en landscape con sidebar más pequeña - portrait prioriza legibilidad y botones táctiles =========================== */ /* Base tipográfica responsiva (evita textos demasiado pequeños) */ html { font-size: 16px; } body, .bubble p, .info p { font-size: clamp(0.95rem, 3.5vw, 1rem); line-height: 1.5; } h1, .page-title { font-size: clamp(1.25rem, 5.2vw, 2.2rem); } h2, h3, .info h3 { font-size: clamp(1rem, 4.0vw, 1.6rem); } /* Mantener dos columnas en landscape en móviles estrechos */ @media (max-width: 700px) and (orientation: landscape) { .content-grid { grid-template-columns: 1fr 260px !important; gap: 16px !important; } .side-column .bubble { width: 240px !important; margin-left: 6px !important; padding: 12px !important; } body, .bubble p, .info p { font-size: clamp(1rem, 2.6vw, 1.05rem); } } /* Portrait (vertical): prioridad legibilidad y stack */ @media (max-width: 700px) and (orientation: portrait) { .content-grid { grid-template-columns: 1fr !important; gap: 14px !important; } .side-column .bubble, .bubble { width: 100% !important; margin-left: 0 !important; padding: 12px !important; } .boton-hero, .nav-bubble a { padding: 10px 14px !important; font-size: clamp(0.95rem, 3.8vw, 1rem) !important; } } /* Prevención final de scroll horizontal */ html, body, .content-grid, .hero, .main-column, .side-column { max-width: 100%; overflow-x: hidden; } /* Si en algún teléfono queda muy apretado: bajar sidebar a 220px */ @media (max-width: 640px) and (orientation: landscape) { .content-grid { grid-template-columns: 1fr 220px !important; } .side-column .bubble { width: 200px !important; } }
+/* responsive.css
+   Forzar 2 columnas visuales en móviles medianos usando sidebar fija a la derecha.
+   - Reemplazo completo. Pega y sustituí TODO en GitHub.
+   - Vuelve a 1 columna en pantallas muy estrechas (<340px).
+   - Safe-area, previene overflow, sidebar desplazable si es más alta que la pantalla.
+*/
+
+/* ========== Variables ========== */
+:root{
+  --max-content-width: 1200px;
+  --page-gutter: 16px;
+  --gap: 20px;
+
+  /* Sidebar width (se adapta con clamp) */
+  --side-min: 120px;
+  --side-ideal: 320px;
+  --side-vw: 30vw;
+
+  /* tamaño mínimo de texto en móviles; subir si querés letras más grandes */
+  --min-font: 1rem;
+
+  --bg: #fff;
+  --sidebar-z: 9999;
+}
+
+/* ========== Reset y seguridad ========== */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  overflow-x: hidden; /* previene scroll horizontal global */
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Safe area (iOS) y padding general */
+.page {
+  padding-left: max(env(safe-area-inset-left), 12px);
+  padding-right: max(env(safe-area-inset-right), 12px);
+  padding-top: max(env(safe-area-inset-top), 12px);
+  padding-bottom: max(env(safe-area-inset-bottom), 12px);
+  margin: 0 auto;
+  width: 100%;
+  max-width: var(--max-content-width);
+  box-sizing: border-box;
+}
+
+/* Evita que hijos forcen overflow */
+.content-grid > * { min-width: 0; }
+
+/* ========== Imágenes y multimedia ========== */
+img, picture, .photo img, video, iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* ========== Tipografía responsiva ========== */
+html { font-size: 16px; }
+body, p, .bubble p, .info p {
+  font-size: clamp(var(--min-font), calc(0.95rem + 0.6vw), 1.06rem);
+  line-height: 1.45;
+}
+
+h1, .page-title {
+  font-size: clamp(1.2rem, 4.2vw, 2rem);
+  margin: 0 0 .4em 0;
+  line-height: 1.06;
+}
+h2 { font-size: clamp(1.05rem, 3.4vw, 1.6rem); margin: 0 0 .35em 0; }
+h3, .info h3 { font-size: clamp(1rem, 3vw, 1.3rem); margin: 0 0 .3em 0; }
+
+/* focus accesible */
+:focus { outline: none; }
+:focus-visible { outline: 3px solid Highlight; outline-offset: 2px; border-radius: 4px; }
+
+/* ========== Layout principal (desktop) ========== */
+/* Mantenemos grid por defecto para desktop */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: var(--gap);
+  align-items: start;
+  margin: 18px auto;
+  padding: 0 var(--page-gutter);
+  width: 100%;
+  max-width: var(--max-content-width);
+  box-sizing: border-box;
+}
+
+/* Burbuja/sidebar estándar */
+.side-column .bubble,
+.bubble {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px;
+  border-radius: 12px;
+  overflow-wrap: break-word;
+}
+
+/* Nav-bubble */
+.nav-bubble {
+  width: 100%;
+  max-width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* ========== Breakpoints intermedios ========== */
+@media (max-width: 900px) {
+  .content-grid {
+    grid-template-columns: 1fr clamp(220px, 28vw, 300px);
+    gap: 18px;
+    padding: 0 14px;
+  }
+  .side-column .bubble { padding: 12px; }
+  .bubble .inner { max-width: 760px; }
+  .hero, .hero .inner { padding: 12px; }
+}
+
+/* ========== MOVIL: FORZAR efecto 2-columnas visuales ========== */
+/* Aplicamos el truco: mantenemos main en flujo y colocamos la sidebar en posición fija a la derecha.
+   Esta técnica hace que se vean 2 columnas en móviles medianos incluso si el HTML está apilado.
+   Para pantallas muy estrechas (<340px) volvemos a 1 columna. */
+
+/* General: ancho de sidebar adaptable (usado tanto en landscape como portrait) */
+:root {
+  --sidebar-w: clamp(var(--side-min), var(--side-vw), var(--side-ideal));
+}
+
+/* Para móviles medianos: aplicamos comportamiento fijo */
+@media (max-width: 700px) and (min-width: 341px) {
+
+  /* Hacemos que el layout principal tenga 1 columna en flujo (para scrolling natural),
+     pero vamos a "sacar" visualmente la sidebar fuera del flujo con position:fixed. */
+  .content-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 0 10px;
+  }
+
+  /* Main column: dejar espacio a la derecha para la sidebar fija */
+  .main-column {
+    margin-right: var(--sidebar-w);
+    transition: margin-right .18s ease;
+    min-width: 0; /* evita overflow */
+  }
+
+  /* Sidebar fijada a la derecha */
+  .side-column {
+    position: fixed;
+    right: max(env(safe-area-inset-right), 10px);
+    /* Centramos verticalmente para que no tape header/footer en la mayoría de casos */
+    top: 50%;
+    transform: translateY(-50%);
+    width: var(--sidebar-w);
+    max-width: calc(100vw - 96px); /* nunca más ancha que la pantalla minus padding */
+    z-index: var(--sidebar-z);
+    box-sizing: border-box;
+    pointer-events: auto;
+  }
+
+  /* Hacer la burbuja de la sidebar desplazable si es más alta que la pantalla */
+  .side-column .bubble {
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Ajustes visuales para que el contenido principal no quede cortado por títulos grandes */
+  .info h3,
+  .page-title {
+    font-size: clamp(1rem, 4vw, 1.5rem) !important;
+    line-height: 1.1 !important;
+    margin-bottom: 8px !important;
+  }
+
+  .info p, .bubble p {
+    font-size: clamp(0.95rem, 3.4vw, 1rem) !important;
+  }
+
+  /* Links / botones táctiles más grandes */
+  .boton-hero, .nav-bubble a {
+    padding: 10px 12px !important;
+    font-size: clamp(0.95rem, 3.6vw, 1rem) !important;
+    display: inline-block;
+  }
+
+  /* Seguridad extra: evitar overflow por elementos internos */
+  .hero, .main-column, .side-column { overflow-x: hidden; min-width: 0; }
+
+}
+
+/* Si el móvil está en landscape y el ancho es suficiente, hacemos la sidebar un poco más ancha */
+@media (max-width: 700px) and (orientation: landscape) and (min-width: 420px) {
+  :root { --sidebar-w: clamp(160px, 28vw, 300px); }
+}
+
+/* Si la pantalla es muy estrecha, volvemos a 1 columna (legibilidad) */
+@media (max-width: 340px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 0 8px;
+  }
+
+  .main-column { margin-right: 0 !important; }
+  .side-column { position: static !important; transform: none !important; width: 100% !important; max-width: 100% !important; }
+  .side-column .bubble { max-height: none; overflow: visible; }
+}
+
+/* ========== Prevención final de overflow y helpers ========== */
+html, body, .content-grid, .hero, .main-column, .side-column {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Listas y elementos de burbuja */
+.bubble ul, .bubble ol { padding-left: 18px; margin: 0 0 0.6em 0; }
+
+/* Evitar que títulos estiren el layout */
+h1, h2, h3 { word-break: break-word; overflow-wrap: break-word; }
+
+/* prefer-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+}
+
+/* Pequeños fixes */
+button, a { word-break: break-word; }
+.bubble img, .bubble iframe { max-width: 100%; height: auto; display: block; }
+
+/* End of file */
+
