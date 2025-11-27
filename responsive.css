@@ -1,16 +1,19 @@
 /* responsive.css
-   Layout / tamaños para móviles (reemplazo completo).
-   Mantiene imágenes fluidas, navegación adaptable y
-   conserva la barra lateral hasta 700px (Option A).
+   Reemplazo completo: layout / tamaños / mejoras móviles
+   - Mantiene 2 columnas hasta 700px (Option A)
+   - Mejora para landscape/portrait en móviles
+   - Conserva imágenes fluidas, accesibilidad y evita scroll horizontal
 */
 
-/* seguridad para móviles */
+/* seguridad y reset pequeño para móviles */
 html, body {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 /* imágenes: nunca desbordan y mantienen proporción */
@@ -20,7 +23,7 @@ img, .photo img {
   display: block;
 }
 
-/* Make nav bubble fit smaller screens */
+/* nav / burbuja de navegación adaptable */
 .nav-bubble {
   width: calc(100% - 24px) !important;
   max-width: 100% !important;
@@ -37,14 +40,14 @@ img, .photo img {
 }
 
 /* ===== Layout principal: mantener 2 columnas hasta 700px ===== */
-/* Reemplaza la regla .content-grid previa por esta */
+/* .content-grid: columna principal flexible + sidebar fija (desktop) */
 .content-grid {
   max-width: 1200px;
   margin: 18px auto;
   padding: 0 20px;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: 1fr 360px; /* columna principal flexible + sidebar 360px */
+  grid-template-columns: 1fr 360px; /* contenido flexible + sidebar 360px */
   gap: 24px;
   align-items: start;
 }
@@ -52,11 +55,10 @@ img, .photo img {
 /* Ajustes para pantallas intermedias (tablets / pantallas estrechas) */
 @media (max-width: 900px) {
   .content-grid {
-    grid-template-columns: 1fr 300px; /* reducimos un poco la sidebar */
+    grid-template-columns: 1fr 300px; /* reducimos sidebar */
     gap: 18px;
   }
 
-  /* ancho controlado de burbujas en la columna lateral */
   .side-column .bubble {
     width: 280px;
     margin-left: 6px;
@@ -81,7 +83,6 @@ img, .photo img {
     max-width: 100% !important;
   }
 
-  /* Burbujas en lateral a ancho completo */
   .side-column .bubble,
   .bubble {
     width: 100% !important;
@@ -89,7 +90,6 @@ img, .photo img {
     box-sizing: border-box;
   }
 
-  /* Steps: apilar info y foto (foto arriba o abajo según preferencia) */
   .steps .step {
     display: flex !important;
     flex-direction: column-reverse !important;
@@ -97,7 +97,6 @@ img, .photo img {
     align-items: stretch !important;
   }
 
-  /* Ajuste de altura de burbujas: no forzar altura fija en móvil */
   .info {
     height: auto !important;
     min-height: 120px;
@@ -105,7 +104,6 @@ img, .photo img {
     box-sizing: border-box;
   }
 
-  /* Foto: que ocupe ancho completo y mantenga aspecto cuadrado cuando sea posible */
   .photo .img-wrap {
     width: 100% !important;
     height: auto !important;
@@ -114,7 +112,6 @@ img, .photo img {
     box-sizing: border-box;
   }
 
-  /* Títulos dentro de las burbujas más pequeños para móviles */
   .info h3,
   .page-title {
     font-size: clamp(1rem, 4.5vw, 1.4rem) !important;
@@ -122,12 +119,10 @@ img, .photo img {
     margin-bottom: 8px !important;
   }
 
-  /* Texto: tamaño legible, evita párrafos excesivos de ancho */
   .info p, .bubble p {
-    font-size: clamp(0.9rem, 3.6vw, 1rem) !important;
+    font-size: clamp(0.95rem, 3.6vw, 1rem) !important;
   }
 
-  /* Nav links: que puedan envolver texto en líneas diferentes sin romper */
   .nav-bubble a {
     display: inline-block;
     white-space: normal !important;
@@ -135,19 +130,17 @@ img, .photo img {
     padding-right: 8px !important;
   }
 
-  /* Reduce sombras/espacios en móviles si se quiere mayor limpieza */
   .nav-bubble, .title-bubble, .bubble, .info, .photo .img-wrap {
     box-shadow: none !important;
   }
 
-  /* devolver padding cómodo y listas normales en móviles */
   .bubble ul, .bubble ol {
     padding-left: 18px;
     list-style-position: outside;
   }
 }
 
-/* Ajustes adicionales para pantallas muy pequeñas */
+/* Ajustes para pantallas muy pequeñas */
 @media (max-width: 480px) {
   .info h3 {
     font-size: 1rem !important;
@@ -162,22 +155,89 @@ img, .photo img {
     border-width: 5px !important;
   }
 
-  /* Si hay scroll horizontal, prevenirlo forzando max-width en elementos principales */
   .hero, .main-column, .side-column, .bubble {
     max-width: 100%;
     overflow-x: hidden;
   }
 }
 
-/* Pequeña ayuda: imágenes dentro de burbujas no deben exceder */
+/* Evita que imágenes dentro de burbujas excedan */
 .bubble img {
   max-width: 100%;
   height: auto;
   display: block;
 }
 
-/* Reparos: evita que títulos gigantes empujen layout en móviles */
+/* Evita títulos que rompan layout */
 h1, h2, h3 {
   word-break: break-word;
   overflow-wrap: break-word;
+}
+
+/* ===========================
+   PARCHE: mejoras para móviles (landscape / portrait)
+   - mantiene 2 columnas en landscape con sidebar más pequeña
+   - portrait prioriza legibilidad y botones táctiles
+   =========================== */
+
+/* Base tipográfica responsiva (evita textos demasiado pequeños) */
+html {
+  font-size: 16px;
+}
+body, .bubble p, .info p {
+  font-size: clamp(0.95rem, 3.5vw, 1rem);
+  line-height: 1.5;
+}
+h1, .page-title {
+  font-size: clamp(1.25rem, 5.2vw, 2.2rem);
+}
+h2, h3, .info h3 {
+  font-size: clamp(1rem, 4.0vw, 1.6rem);
+}
+
+/* Mantener dos columnas en landscape en móviles estrechos */
+@media (max-width: 700px) and (orientation: landscape) {
+  .content-grid {
+    grid-template-columns: 1fr 260px !important;
+    gap: 16px !important;
+  }
+  .side-column .bubble {
+    width: 240px !important;
+    margin-left: 6px !important;
+    padding: 12px !important;
+  }
+  body, .bubble p, .info p {
+    font-size: clamp(1rem, 2.6vw, 1.05rem);
+  }
+}
+
+/* Portrait (vertical): prioridad legibilidad y stack */
+@media (max-width: 700px) and (orientation: portrait) {
+  .content-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+  .side-column .bubble, .bubble {
+    width: 100% !important;
+    margin-left: 0 !important;
+    padding: 12px !important;
+  }
+  .boton-hero, .nav-bubble a {
+    padding: 10px 14px !important;
+    font-size: clamp(0.95rem, 3.8vw, 1rem) !important;
+  }
+}
+
+/* Prevención final de scroll horizontal */
+html, body, .content-grid, .hero, .main-column, .side-column {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Si en algún teléfono queda muy apretado: bajar sidebar a 220px */
+@media (max-width: 640px) and (orientation: landscape) {
+  .content-grid {
+    grid-template-columns: 1fr 220px !important;
+  }
+  .side-column .bubble { width: 200px !important; }
 }
