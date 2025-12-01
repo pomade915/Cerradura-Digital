@@ -4,83 +4,66 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Caja Fuerte Digital Inteligente</title>
+
+  <!-- mantengo tus hojas externas -->
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="responsive.css">
-  <!-- Fuente estilo Minecraft -->
+
+  <!-- Fuente estilo Minecraft (sin tocar) -->
   <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
 
   <style>
+    /* ---------- RESET Y BASE ---------- */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f1e6;
-      margin: 0;
-      padding: 0;
+      /* mantengo tu fondo pero lo suavizo con un overlay y degradados */
+      background-image: url('imagenes/minecraft_fondillo.jpg');
+      background-repeat: repeat;
+      background-size: cover;
+      background-position: center;
+      color: #0b0b0b;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding: 36px 18px;
+      position: relative;
+      min-height: 100vh;
     }
 
+    /* overlay para que el fondo no compita con el contenido */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(8,5,12,0.55), rgba(20,6,40,0.55));
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrap {
+      max-width: 1140px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1; /* por encima del overlay */
+    }
+
+    /* ---------- NAV ---------- */
     .navbar {
-      background-color: #222;
-      padding: 10px;
-      text-align: center;
-    }
-
-    .navbar a {
-      font-family: 'Minecraft', sans-serif !important;
-      text-transform: uppercase;
-      color: #fff;
-      font-size: 1.2rem;
-      text-decoration: none;
-      transition: 0.3s ease-in-out;
-      text-shadow:
-        0 0 5px #a64dff,
-        0 0 10px #a64dff,
-        0 0 20px #a64dff;
-    }
-
-    .navbar a:hover {
-      color: #e0b3ff;
-      text-shadow:
-        0 0 10px #a64dff,
-        0 0 20px #a64dff,
-        0 0 30px #cc66ff;
-    }
-
-    /* CONTENEDOR GENERAL: dejado transparente para eliminar la "burbuja de fondo" */
-    .caracteristicas {
-      display: flex;
-      flex-direction: column;
+      display:flex;
+      justify-content:center;
+      gap: 18px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.25); /* mantengo barra pero más tenue */
+      border: 1px solid rgba(178,102,255,0.06);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+      margin-bottom: 20px;
       align-items: center;
-      padding: 30px;
-      gap: 20px;
-
-      /* <-- OVERRIDE para eliminar la burbuja grande de fondo */
-      background: transparent !important;
-      border-radius: 0 !important;
-      box-shadow: none !important;
-      border: none !important;
+      backdrop-filter: blur(3px);
     }
 
-    /* === TITULOS CON EFECTO (Minecraft + negro + violeta) === */
-    .titulo-efecto {
-      font-family: 'Minecraft', sans-serif !important;
-      text-transform: uppercase;
-      color: #000000 !important; /* valor por defecto (algunas burbujas lo sobrescriben) */
-      text-align: center;
-      animation: glowMove 3s infinite alternate ease-in-out;
-      margin: 0;
-    }
-
-    /* Tamaño del h1 principal */
-    .card.titulo h1.titulo-efecto {
-      font-size: 2rem; /* agrandado */
-      line-height: 1.5;
-    }
-
-    /* Tamaño de los h3 */
-    .card h3.titulo-efecto {
-      font-size: 1.4rem; /* agrandado */
-      margin-top: 0;
-    }
-
+    /* ---------- TÍTULO / GLOW ANIMATION (reutilizada) ---------- */
     @keyframes glowMove {
       0% {
         text-shadow:
@@ -102,160 +85,264 @@
       }
     }
 
-    /* =====================================================================
-       BURBUJA PRINCIPAL: ahora recoge el mismo estilo/color de las burbujas secundarias
-       y el texto queda en negro con glow violeta (igual que las otras tarjetas).
-       ===================================================================== */
-
-    .card.titulo {
-      /* color igual a las burbujas secundarias (amarillo/crema suave) */
-      background-color: #fff8dc;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.10);
-      text-align: center;
-      max-width: 800px;
-      border: 3px solid rgba(178,102,255,0.95); /* borde violeta igual que las tarjetas */
-    }
-
-    /* Hacer que el texto principal use color negro con el mismo glow violeta que las tarjetas */
-    .card.titulo .titulo-efecto {
-      color: #000000 !important;
-      text-shadow:
-        0 0 12px rgba(166,77,255,0.45),
-        0 0 26px rgba(178,102,255,0.28);
-    }
-
-    /* Contenedor para las otras burbujas */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      width: 100%;
-      max-width: 900px;
-      justify-items: center;
-    }
-
-    /* === Burbujas secundarias: crema + borde violeta === */
-    .card {
-      background-color: #fff8dc; /* tono amarillo-crema suave */
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.10);
-      text-align: center;
-      width: 100%;
-      border: 3px solid rgba(178,102,255,0.95); /* borde violeta como antes */
-    }
-
-    .card .titulo-efecto {
-      color: #000000 !important;
-      text-shadow:
-        0 0 12px rgba(166,77,255,0.45),
-        0 0 26px rgba(178,102,255,0.28);
-    }
-
-    .card p {
-      margin: 10px 0 0;
-      color: rgba(0,0,0,0.85);
-      line-height: 1.6;
-    }
-
-    @media (max-width: 768px) {
-      .cards-grid {
-        grid-template-columns: 1fr;
-      }
-      .card.titulo { padding: 22px; }
-    }
-
-    /* BOTON DE COMPRA (sin cambios) */
-    .boton-compra {
-      display: block;
-      margin: 30px auto;
-      padding: 16px 28px;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 14px;
-      font-size: 1.15rem;
-      text-align: center;
-      max-width: 260px;
+    .titulo-efecto {
       font-family: 'Minecraft', sans-serif !important;
       text-transform: uppercase;
-
-      background-image:
-        linear-gradient(135deg, rgba(255,65,108,0.95) 0%, rgba(138,43,226,0.95) 100%),
-        repeating-linear-gradient(45deg, rgba(255,255,255,0.04) 0 8px, rgba(0,0,0,0) 8px 16px);
-      background-blend-mode: overlay;
-      box-shadow:
-        0 6px 18px rgba(138,43,226,0.35),
-        0 0 36px rgba(166,77,255,0.2) inset,
-        0 8px 30px rgba(0,0,0,0.45);
-      border: 2px solid rgba(255,255,255,0.12);
-      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
-      filter: saturate(1.06);
-    }
-
-    .boton-compra:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow:
-        0 10px 30px rgba(138,43,226,0.42),
-        0 0 48px rgba(166,77,255,0.28),
-        0 10px 40px rgba(0,0,0,0.5);
-      filter: saturate(1.12) brightness(1.02);
-    }
-
-    .boton-compra:active {
-      transform: translateY(0) scale(0.995);
-      box-shadow:
-        0 6px 18px rgba(138,43,226,0.32),
-        0 0 36px rgba(166,77,255,0.18);
-    }
-
-    footer {
+      color: #000000 !important;
       text-align: center;
-      padding: 15px;
-      background-color: #222;
-      color: #fff;
-      margin-top: 30px;
+      animation: glowMove 3s infinite alternate ease-in-out;
+      margin: 0;
+      display:inline-block;
     }
+
+    /* --- INICIO: aplico exactamente el mismo color + efecto (glowMove) que usa el título,
+         y mantengo la burbuja fina / misma anchura que la burbuja grande debajo. --- */
+    .navbar a {
+      font-family: 'Minecraft', sans-serif !important;
+      text-transform: uppercase;
+      color: #000000 !important;               /* mismo color base que el título */
+      font-size: clamp(1rem, 1.6vw, 1.18rem);
+      text-decoration: none;
+      padding: 8px 20px;                       /* burbuja más fina verticalmente */
+      letter-spacing: .8px;
+      transition: 0.3s ease-in-out;
+      background-color: #fff8dc;
+      border-radius: 12px;
+      border: 3px solid rgba(178,102,255,0.95);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+      display: block;
+      width: 100%;
+      max-width: 980px;                        /* coincide con la burbuja grande */
+      text-align: center;
+      margin: 0 auto;
+
+      /* REUTILIZO la animación y sombras del título para que el texto "INICIO"
+         tenga exactamente el mismo efecto violeta/neón animado */
+      animation: glowMove 3s infinite alternate ease-in-out;
+      /* además, definimos un sutil base text-shadow (complementario) */
+      text-shadow:
+        2px 2px 6px #8000ff,
+        0 0 12px #b266ff,
+        0 0 20px #cc66ff;
+    }
+
+    .navbar a:hover {
+      transform: translateY(-3px);
+      /* mantiene el glow más fuerte al hover (similar a título intensificado) */
+      text-shadow:
+        2px 2px 10px #8000ff,
+        0 0 22px #b266ff,
+        0 0 40px #cc66ff;
+      color: #000000 !important;
+    }
+
+    /* ---------- MAIN LAYOUT ----------
+       He ajustado la grid para que el bloque de características ocupe todo el ancho disponible.
+    */
+    .caracteristicas {
+      display: grid;
+      grid-template-columns: 1fr; /* ahora solo una columna: el contenido principal ocupa todo */
+      gap: 24px;
+      align-items: start;
+      width: 100%;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ---------- HEADER CARD (titulo) ---------- */
+    .header-wrap {
+      grid-column: 1 / -1; /* ocupa todo el ancho de la grid */
+      display: flex;
+      justify-content: center;
+      margin-bottom: 6px;
+    }
+    .card.titulo {
+      width: 100%;
+      max-width: 980px;
+      background: linear-gradient(180deg,#fffaf0,#fff6dc);
+      border-radius: 12px;
+      padding: 22px 26px;
+      text-align: center;
+      border: 3px solid rgba(178,102,255,0.95);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.30), 0 0 28px rgba(178,102,255,0.03) inset;
+      transition: transform .18s ease, box-shadow .18s ease;
+      align-self: start;
+    }
+    .card.titulo:hover { transform: translateY(-6px); }
+
+    /* ---------- MAIN COLUMN: ahora única columna amplia ---------- */
+    .main-column {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    /* tarjeta base (mantengo color/borde) */
+    .card {
+      background-color: #fff8dc;
+      padding: 18px;
+      border-radius: 12px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+      text-align: center;
+      width: 100%;
+      border: 3px solid rgba(178,102,255,0.95);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 150px;
+      transition: transform .16s ease, box-shadow .16s ease;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.18); }
+
+    .card .titulo-efecto {
+      font-family: 'Minecraft', sans-serif !important;
+      text-transform: uppercase;
+      color: #000000 !important;
+      margin-bottom: 8px;
+    }
+    .card p {
+      margin-top: 8px;
+      color: rgba(0,0,0,0.87);
+      line-height: 1.55;
+      font-size: 0.98rem;
+    }
+
+    /* ---------- BLOQUE UNIFICADO DE TEXTO ---------- */
+    .prolijo-card {
+      text-align: left;
+      padding: 30px;
+      line-height: 1.6;
+      font-size: 1rem;
+      color: rgba(0,0,0,0.95);
+      max-width: 100%;
+      white-space: normal;
+      min-height: 460px;
+      margin: 0 auto;
+      max-width: 980px; /* mantener la misma anchura que el título y el botón INICIO */
+    }
+    .prolijo-card p { margin-bottom: 12px; }
+    .prolijo-card .lead {
+      font-weight: 700;
+      margin-bottom: 8px;
+      display:block;
+    }
+    .prolijo-list { margin-top: 8px; padding-left: 20px; }
+    .prolijo-list li { margin-bottom: 8px; }
+
+    /* ---------- CTA (Comprar ahora): HACERLO UN POCO MÁS GRANDE ---------- */
+    .cta-wrap {
+      grid-column: 1 / -1;
+      display:flex;
+      justify-content:center;
+      margin-top: 8px;
+    }
+    .boton-compra {
+      display:block;
+      margin: 18px auto;
+      padding: 18px 36px; /* aumento padding para hacerlo más grande */
+      border-radius: 14px;
+      text-decoration:none;
+      color:#fff;
+      font-family: 'Minecraft', sans-serif !important;
+      text-transform: uppercase;
+      font-size: clamp(1.08rem, 2vw, 1.3rem); /* letra más grande */
+      background-image: linear-gradient(135deg, rgba(255,65,108,0.98) 0%, rgba(138,43,226,0.98) 100%);
+      box-shadow: 0 26px 60px rgba(162,60,255,0.22);
+      transition: transform .14s ease, box-shadow .14s ease;
+    }
+    .boton-compra:hover { transform: translateY(-4px); box-shadow: 0 34px 80px rgba(162,60,255,0.28); }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      text-align:center;
+      padding: 14px;
+      color: #ffffff;
+      margin-top: 28px;
+      font-size: .95rem;
+    }
+    footer p { color: #000000 !important; }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 1100px) {
+      .caracteristicas { grid-template-columns: 1fr; }
+      .header-wrap { margin-bottom: 12px; }
+      .card.titulo { padding: 18px; }
+      .main-column { width: 100%; }
+      .card { min-height: auto; padding: 16px; }
+      .wrap { padding-left: 12px; padding-right: 12px; }
+      .navbar a { width: 94%; max-width: none; padding: 8px 16px; }
+      .prolijo-card { padding: 22px; min-height: auto; max-width: none; }
+      .boton-compra { padding: 16px 30px; font-size: 1.08rem; }
+    }
+
+    @media (max-width: 520px) {
+      .titulo-efecto { font-size: 1rem; }
+      .navbar a { font-size: .98rem; padding: 8px 12px; width: 94%; }
+      .boton-compra { width: 85%; padding: 14px 20px; font-size: 1rem; }
+      .prolijo-card { font-size: 0.98rem; padding: 18px; min-height: auto; }
+    }
+
+    /* reduce exceso de glow en párrafos si el fondo sigue fuerte (no tocamos títulos) */
+    p { text-shadow: none; }
   </style>
 </head>
 <body>
-  <nav class="navbar">
-    <a href="INICIO.html">INICIO</a>
-  </nav>
+  <div class="wrap">
 
-  <section class="caracteristicas">
-    <!-- Burbuja principal (titulo) - ahora crema igual que las tarjetas -->
-    <div class="card titulo">
-      <h1 class="titulo-efecto">Caja Fuerte Digital Inteligente. <br>Protege lo que mas valoras con la mejor tecnologia!</h1>
-    </div>
+    <!-- NAV: INICIO ahora es burbuja (crema) igual a las tarjetas and del mismo ancho max,
+         con el mismo color/efecto que el título principal -->
+    <nav class="navbar" role="navigation" aria-label="Navegación principal">
+      <a href="INICIO.html" role="link" aria-label="Ir a INICIO">INICIO</a>
+    </nav>
 
-    <!-- Burbujas en grilla (restauradas a crema con borde violeta) -->
-    <div class="cards-grid">
-      <div class="card">
-        <h3 class="titulo-efecto">Triple Seguridad</h3>
-        <p>Huella digital, tarjeta RFID y codigo PIN para maxima proteccion.</p>
+    <section class="caracteristicas">
+
+      <!-- HEADER: titulo dentro de su card -->
+      <div class="header-wrap">
+        <div class="card titulo">
+          <h1 class="titulo-efecto">Caja Fuerte Digital Inteligente. <br>Protege lo que mas valoras con la mejor tecnologia!</h1>
+        </div>
       </div>
-      <div class="card">
-        <h3 class="titulo-efecto">Facil de Usar</h3>
-        <p>Configuracion rapida y acceso en segundos con reconocimiento inmediato.</p>
-      </div>
-      <div class="card">
-        <h3 class="titulo-efecto">Bajo Consumo</h3>
-        <p>Bateria de larga duracion y puerto USB para emergencia.</p>
-      </div>
-      <div class="card">
-        <h3 class="titulo-efecto">Espaciosa</h3>
-        <p>Ideal para documentos, dinero, dispositivos y mas.</p>
-      </div>
-    </div>
-  </section>
 
-  <a href="FORMULARIO.html" class="boton-compra"> Comprar ahora</a>
+      <!-- MAIN: bloque de texto alargado -->
+      <div class="main-column" aria-label="Características principales">
+        <div class="card prolijo-card" role="article" aria-label="Resumen de características">
+          <p>
+            Nuestra caja fuerte digital combina seguridad, facilidad de uso, eficiencia energética y espacio interior pensado para tus objetos de valor.
+            Está diseñada con <strong>seguridad triple</strong>: lector de huellas digitales, tarjeta RFID y código PIN, ofreciendo múltiples capas de protección
+            para impedir accesos no autorizados.
+          </p>
+          <p>
+            El equipo es <strong>fácil de usar</strong>: su configuración es rápida y el acceso se realiza en segundos mediante reconocimiento inmediato,
+            ideal para uso diario sin complicaciones.
+          </p>
+          <p>
+            En cuanto a autonomía, ofrece <strong>bajo consumo</strong>: batería de larga duración y un puerto USB de emergencia para asegurar el acceso aun
+            cuando la batería esté baja.
+          </p>
+          <p>
+            Finalmente, es <strong>espaciosa</strong>: cuenta con suficiente espacio interior para documentos, dinero, dispositivos y otros objetos personales,
+            combinando protección con versatilidad de uso.
+          </p>
+          <ul class="prolijo-list" aria-hidden="true">
+            <li><strong>Seguridad:</strong> Huella / RFID / PIN</li>
+            <li><strong>Uso:</strong> Configuración rápida y acceso inmediato</li>
+            <li><strong>Autonomía:</strong> Batería de larga duración + USB de emergencia</li>
+            <li><strong>Capacidad:</strong> Espacio para documentos, dinero y dispositivos</li>
+          </ul>
+        </div>
+      </div>
 
-  <footer>
-    <p>© 2025 Caja Fuerte Tech | Todos los derechos reservados</p>
-  </footer>
+      <!-- CTA centrado (Comprar ahora aumentado) -->
+      <div class="cta-wrap">
+        <a href="FORMULARIO.html" class="boton-compra" role="button" aria-label="Comprar ahora">CONTACTAR</a>
+      </div>
+    </section>
 
+    <footer>
+      <p>© 2025 Caja Fuerte Tech | Todos los derechos reservados</p>
+    </footer>
+  </div>
 </body>
 </html>
