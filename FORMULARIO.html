@@ -21,21 +21,17 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Título principal: mismo look neon que el botón INICIO, pero menos intenso */
     .mc-title {
       font-size: 3.2rem;
-      /* <-- Ajuste: moví el título un poco hacia arriba y aumenté el espacio debajo */
-      margin: -10px 0 28px 0; /* top, right, bottom, left */
+      margin: -10px 0 28px 0;
       text-align: center;
       color: #000;
-      /* tonos iguales que el INICIO pero con menor opacidad/intensidad */
       text-shadow:
         0 0 6px rgba(166,77,255,0.70),
         0 0 16px rgba(128,0,255,0.50),
         0 0 32px rgba(204,102,255,0.25);
     }
 
-    /* Subtítulos o etiquetas (labels del formulario) */
     .mc-label {
       font-size: 1.6rem;
       text-align: left;
@@ -46,7 +42,7 @@
 
     /* ======== FORMULARIO ======== */
     form.formulario-compra {
-      background-color: rgba(255, 248, 220, 0.72); /* tono crema semitransparente */
+      background-color: rgba(255, 248, 220, 0.72);
       border-radius: 15px;
       padding: 36px;
       max-width: 720px;
@@ -57,7 +53,6 @@
       box-sizing: border-box;
     }
 
-    /* uniformizamos el box-sizing para evitar recortes al redimensionar */
     *, *::before, *::after { box-sizing: border-box; }
 
     input, select {
@@ -70,16 +65,13 @@
       font-size: 1.1rem;
       outline: none;
       box-sizing: border-box;
-      min-height: 44px; /* altura base similar entre inputs */
+      min-height: 44px;
     }
 
-    /* textarea: ahora tiene la misma altura inicial que los inputs y es redimensionable verticalmente.
-       Esto hace que al cargar la página se vea del mismo "tamaño" que los campos superiores, pero
-       el usuario puede agrandarla o achicarla (resize vertical). */
     textarea {
       width: 100%;
-      height: 44px;       /* altura inicial igual a los inputs */
-      min-height: 44px;   /* altura mínima para que coincida con los inputs */
+      height: 44px;
+      min-height: 44px;
       padding: 12px;
       margin-bottom: 20px;
       border: none;
@@ -88,13 +80,26 @@
       font-size: 1.1rem;
       outline: none;
       box-sizing: border-box;
-      resize: vertical;   /* permite agrandar / achicar verticalmente */
+      resize: vertical;
       line-height: 1.3;
       overflow: auto;
     }
 
-    /* ======== BOTON: (efecto neón púrpura para el botón del formulario) ======== */
-    button {
+    /* Mensaje de error para emails */
+    #email-error {
+      color: #b00020;
+      font-size: 0.95rem;
+      margin-top: -12px;
+      margin-bottom: 12px;
+      display: none;
+    }
+    .input-error {
+      box-shadow: 0 0 0 3px rgba(176,0,32,0.10) inset;
+      border-radius: 8px;
+    }
+
+    /* BOTON: (efecto neón púrpura para el botón del formulario) */
+    button[type="submit"] {
       display: block;
       margin: 25px auto 0 auto;
       padding: 16px 30px;
@@ -106,27 +111,21 @@
       border-radius: 10px;
       cursor: pointer;
       font-size: 1.3rem;
-
-      /* base shadows + neón púrpura */
       box-shadow:
         0 8px 28px rgba(138,43,226,0.28),
-        0 0 22px rgba(166,77,255,0.18), /* suave halo púrpura */
+        0 0 22px rgba(166,77,255,0.18),
         0 2px 8px rgba(0,0,0,0.25) inset;
       text-shadow:
         0 0 8px rgba(166,77,255,0.9),
         0 0 18px rgba(128,0,255,0.7);
       transition: transform 0.18s ease, box-shadow 0.18s ease, filter .18s ease;
       filter: saturate(1.06);
-      -webkit-filter: drop-shadow(0 0 12px rgba(166,77,255,0.15));
-      filter: drop-shadow(0 0 12px rgba(166,77,255,0.15));
     }
-
-    /* estado hover: intensificar neón */
-    button:hover {
+    button[type="submit"]:hover {
       transform: translateY(-3px) scale(1.03);
       box-shadow:
         0 12px 38px rgba(138,43,226,0.42),
-        0 0 44px rgba(166,77,255,0.38), /* glow exterior aumentado */
+        0 0 44px rgba(166,77,255,0.38),
         0 0 60px rgba(128,0,255,0.18) inset,
         0 2px 8px rgba(0,0,0,0.25) inset;
       text-shadow:
@@ -135,21 +134,15 @@
       filter: saturate(1.08) brightness(1.02);
     }
 
-    /* ======== NAV ======== */
-    nav {
-      text-align: center;
-      margin: 18px 0;
-    }
-
-    /* Nav-bubble: ahora tiene posicion relativa para el pseudo-brillo, mantiene curvas del formulario */
+    nav { text-align:center; margin:18px 0; }
     .nav-bubble {
       position: relative;
       display: block;
-      width: calc(100% - 120px); /* larga como pediste (deja márgenes laterales) */
-      max-width: 1200px;         /* más ancha que antes */
+      width: calc(100% - 120px);
+      max-width: 1200px;
       margin: 12px auto;
-      padding: 6px 24px;         /* burbuja fina (menos altura) */
-      border-radius: 15px;       /* misma forma de curvas que el formulario */
+      padding: 6px 24px;
+      border-radius: 15px;
       background-color: rgba(8,8,8,0.96);
       border: 3px solid rgba(178,102,255,0.95);
       box-shadow:
@@ -159,17 +152,15 @@
       text-align: center;
       box-sizing: border-box;
       z-index: 1;
-      overflow: visible; /* para que el glow pseudo-element no se recorte */
+      overflow: visible;
     }
-
-    /* pseudo-elemento difuso que crea un glow púrpura visible detrás de la burbuja */
     .nav-bubble::before {
       content: "";
       position: absolute;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
-      width: calc(100% + 120px); /* extiende el glow más allá de la burbuja */
+      width: calc(100% + 120px);
       height: calc(100% + 36px);
       border-radius: 18px;
       pointer-events: none;
@@ -179,10 +170,9 @@
       opacity: 0.95;
       mix-blend-mode: screen;
     }
-
     .nav-bubble a {
       position: relative;
-      z-index: 2; /* encima del glow */
+      z-index: 2;
       font-family: 'Minecraft', sans-serif !important;
       text-transform: uppercase;
       color: #ffffff;
@@ -191,14 +181,12 @@
       padding: 4px 12px;
       font-size: 1.15rem;
       letter-spacing: 1px;
-      /* reforzamos el text-shadow para que el neón sea idéntico a otros INICIO */
       text-shadow:
         0 0 12px rgba(166,77,255,1),
         0 0 28px rgba(128,0,255,0.95),
         0 0 60px rgba(204,102,255,0.75);
       transition: text-shadow .12s ease, transform .12s ease;
     }
-
     .nav-bubble a:hover {
       filter: brightness(1.06);
       text-shadow:
@@ -208,7 +196,7 @@
       transform: scale(1.02);
     }
 
-    /* ======== FONDO ======== */
+    /* fondo */
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, sans-serif;
@@ -219,16 +207,14 @@
       background-attachment: fixed;
     }
 
-    /* Responsivo: reduce ancho del nav-bubble y tamaños */
     @media (max-width: 900px) {
       .nav-bubble { width: calc(100% - 40px); margin: 10px auto; padding: 6px 16px; border-radius: 15px; }
       .nav-bubble a { font-size: 1rem; }
       .mc-title { font-size: 2.4rem; margin-top: -6px; margin-bottom: 22px; }
       form.formulario-compra { margin: 22px 16px; padding: 22px; max-width: 100%; }
-      textarea { min-height: 80px; } /* en pantallas chicas dejamos un min más cómodo */
+      textarea { min-height: 80px; }
       .nav-bubble::before { width: calc(100% + 80px); height: calc(100% + 28px); filter: blur(14px); }
     }
-
     @media (max-width: 480px) {
       .nav-bubble { width: calc(100% - 24px); padding: 6px 10px; border-radius: 12px; }
       .nav-bubble a { font-size: 0.98rem; }
@@ -246,32 +232,63 @@
 
   <main class="bloque">
 
-    <!-- TITULO MOVIDO DENTRO DE LA BURBUJA (formulario) -->
-    <form action="guardar_compra.php" method="POST" class="formulario-compra">
-      <h2 class="mc-title">Formulario de compra</h2>
+    <!-- FORMULARIO -->
+    <!-- Si querés que la respuesta (página de "Gracias") abra en otra pestaña,
+         agregá target="_blank" dentro de la etiqueta <form> -->
+    <form action="https://script.google.com/macros/s/AKfycbw_bP0ctmrflRsJojGaZpBUMZvHLssiIFhjFwtRaoyd2Dw5incE_a7pvjsU1AqC72ylEA/exec"
+          method="post"
+          class="formulario-compra"
+          id="contact-form"
+          novalidate>
+      <h2 class="mc-title">Formulario de contacto</h2>
 
       <label class="mc-label">Nombre completo:</label>
-      <input type="text" name="nombre" required>
+      <input type="text" name="nombre" id="nombre" required>
 
       <label class="mc-label">Email:</label>
-      <input type="email" name="email" required>
+      <input type="email" name="email" id="email" required>
 
-      <label class="mc-label">Direccion:</label>
-      <textarea name="direccion" required></textarea>
+      <label class="mc-label">Confirmar email:</label>
+      <input type="email" name="email_confirm" id="email_confirm" required>
+      <div id="email-error" role="alert" aria-live="polite">Los correos no coinciden.</div>
 
-      <label class="mc-label">Metodo de pago:</label>
-      <select name="metodo_pago" required>
-        <option value="Transferencia">Transferencia</option>
-        <option value="Tarjeta">Tarjeta de credito</option>
-        <option value="Efectivo">Efectivo</option>
-      </select>
+      <label class="mc-label">Numero de telefono:</label>
+      <input type="tel" name="telefono" id="telefono" required>
 
-      <label class="mc-label">Cantidad:</label>
-      <input type="number" name="cantidad" min="1" required>
-
-      <button type="submit">Enviar Pedido</button>
+      <button type="submit" id="submit-btn">CONFIRMAR</button>
     </form>
 
   </main>
+
+  <script>
+    (function(){
+      const form = document.getElementById('contact-form');
+      const email = document.getElementById('email');
+      const emailConfirm = document.getElementById('email_confirm');
+      const emailError = document.getElementById('email-error');
+
+      function checkEmails() {
+        const a = (email.value || "").trim();
+        const b = (emailConfirm.value || "").trim();
+        return a === b && a !== "";
+      }
+
+      // Validar solo al enviar (comportamiento original)
+      form.addEventListener('submit', function(e){
+        if (!checkEmails()) {
+          e.preventDefault();                 // evita envío si no coinciden
+          emailError.style.display = 'block'; // muestra el mensaje
+          emailConfirm.classList.add('input-error');
+          emailConfirm.focus();
+        } else {
+          // si coinciden, ocultamos el mensaje y permitimos el submit normal
+          emailError.style.display = 'none';
+          emailConfirm.classList.remove('input-error');
+          // Si quieres manejar el envío con JS después, aquí podríamos interceptar.
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
+
