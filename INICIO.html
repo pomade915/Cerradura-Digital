@@ -90,7 +90,7 @@
           text-shadow: 0 0 5px #8000ff, 0 0 10px #b266ff;
         }
         50% {
-          text-shadow: 0 0 15px #cc66ff, 0 0 25px #8000ff, 0 0 35px #b266ff;
+          text-shadow: 0 0 15px #cc66ff, 0 0 25px #8000ff, 0 0 35px #cc66ff;
         }
       }
 
@@ -154,11 +154,29 @@
         align-items: start;
       }
 
-      /* Hero / titulo grande arriba, ocupa todo el ancho central */
-      .hero {
-        grid-column: 1 / -1; /* ocupa ambas columnas */
+      /* Re-creamos la burbuja de fondo para el header (título + nav) */
+      .header-bubble {
+        /* misma estética que .bubble (la clase .bubble ya aplica la apariencia),
+           aquí ajustamos el contenedor para que esté centrado y completo. */
+        max-width: 1200px;
+        margin: 30px auto;
+        /* <-- cambiado: reducimos el padding-top/bottom para hacer la burbuja menos alta */
+        padding: 8px 12px;
+        box-sizing: border-box;
         text-align: center;
-        padding: 14px 12px;
+      }
+
+      /* Ajuste solicitado: bajar imagen de "CERRADURA DIGITAL" más abajo */
+      .logo-titulo {
+        margin-top: 8px; /* <-- cambiado: menos espacio arriba dentro de la burbuja */
+        text-align: center; /* asegura que la imagen quede centrada en su contenedor */
+      }
+      .logo-titulo h1 {
+        margin: 0;
+      }
+      .logo-titulo h1 img {
+        display: block;
+        margin: 0 auto;
       }
 
       /* Cada "burbuja" mantiene su contenido pero ahora es un bloque con padding */
@@ -210,6 +228,11 @@
         margin-top: 60px;
       }
       #ventas {
+        margin-top: 60px;
+      }
+
+      /* Ajuste solicitado: bajar la burbuja de resumen/introducción para alinearla con #por-que */
+      #resumen {
         margin-top: 60px;
       }
 
@@ -284,6 +307,9 @@
         #por-que { margin-top: 30px; }
         #ventas { margin-top: 30px; }
 
+        /* Alineación móvil: reducir margen superior del resumen para mantener diseño fluido */
+        #resumen { margin-top: 30px; }
+
         /* para móviles devolvemos listas a un padding cómodo */
         .bubble ul, .bubble ol { padding-left: 18px; list-style-position: outside; }
         .lista-integrantes li { width: 100%; margin-left: 0; padding: 12px 16px; }
@@ -300,83 +326,53 @@
     background-attachment:scroll; /* cambiado a scroll para permitir movimiento por JS */
 ">
 
- <header class="encabezado-lateral">
+ <!-- Header envuelto en la burbuja para que la caja amarilla quede completa -->
+ <header class="encabezado-lateral header-bubble bubble">
   <div class="logo-titulo">
-    <h1><img src="imagenes/minecraft_title.png" width="660" height="55"></h1>
+    <h1><img src="imagenes/minecraft_title.png" width="660" height="55" alt="CERRADURA DIGITAL"></h1>
+  </div>
 
-<nav class="navbar">
-  <a href="INTEGRANTES.html">Integrantes</a>
-  <a href="COMPONENTES.html">Componentes</a>
-  <a href="funcionamiento.html">Funcionamiento</a>
-  <a href="PROCESO.html">Proceso</a>
-</nav>
-  
+  <nav class="navbar">
+    <a href="INTEGRANTES.html">Integrantes</a>
+    <a href="COMPONENTES.html">Componentes</a>
+    <a href="funcionamiento.html">Funcionamiento</a>
+    <a href="PROCESO.html">Proceso</a>
+  </nav>
 </header>
 
     <main>
 
-      <!-- CONTENEDOR GRID: HERO arriba, luego columnas -->
+      <!-- CONTENEDOR GRID: luego columnas -->
       <div class="content-grid">
-
-        <!-- HERO: Título del proyecto (ocupa todo el ancho) -->
-        <div class="hero bubble">
-          <h2 class="titulo-negro">TITULO DEL PROYECTO</h2>
-          <p style="text-align: center;"><strong>Caja Fuerte Electronica con Autenticacion por Huella Digital, Tarjeta RFID y Codigo Numerico</strong></p>
-        </div>
 
         <!-- COLUMNA PRINCIPAL (IZQUIERDA) -->
         <div class="main-column">
 
-          <!-- Introducción (primera burbuja grande) -->
-          <div class="bubble" id="intro-1">
-            <h2 class="titulo-negro">INTRODUCCION</h2>
+          <!-- RESUMEN UNIFICADO (reemplaza introducción, app y funcionalidad) -->
+          <div class="bubble" id="resumen">
+            <h2 class="titulo-negro">RESUMEN DEL PROYECTO</h2>
             <div class="inner">
               <p>
-                El proyecto consiste en recrear una cerradura digital funcional, la cual será aplicada en una caja fuerte de uso personal, con el objetivo de proteger y preservar la seguridad tanto del recipiente como del contenido que se desee resguardar. La idea de desarrollar esta cerradura surgió por el interés en explorar diferentes soluciones de seguridad y por la posibilidad de experimentar con distintos diseños de la caja; finalmente nos decidimos por una estética inspirada en el "Ender Chest" debido a su aspecto distintivo y atractivo. Nuestra intención es ofrecer una caja fuerte que combine la apariencia estética del Ender Chest con un sistema seguro y plenamente funcional para cualquier usuario. A futuro planeamos ofrecer más variantes inspiradas en cofres de Minecraft no solo el "Ender Chest" para que el comprador disponga de varias opciones.
+                Proyecto de una cerradura digital para caja fuerte de uso personal, con diseño inspirado en el "Ender Chest". Combina tres métodos de autenticación: huella dactilar, tarjeta RFID y código numérico, buscando ofrecer una solución segura y visualmente atractiva.
               </p>
+
               <p>
-                Además del desarrollo del dispositivo físico, el proyecto incluirá una página web la cual cubrirá diferentes áreas. Con propósito de fines informativos, publicitarios y comerciales para la promoción la página detallará las características del producto, sus ventajas, modos de uso y componentes técnicos, por otro lado, contará con un espacio de atención al cliente con la posibilidad de adquirir el producto iniciando sesión, esto será guardado en una base de datos incluida.
+                Incluye una página web informativa y una aplicación Android para control remoto. La app permitirá apertura remota, registro y reportes de accesos, cambio de clave y notificaciones de alarma. También se prevé una sección de compra con inicio de sesión y almacenamiento en base de datos para usuarios y pedidos.
               </p>
-            </div>
-          </div>
 
-          <!-- Introducción (segunda burbuja con la app y lista) -->
-          <div class="bubble" id="intro-2">
-            <div class="inner">
               <p>
-                Por otro lado, se diseñará una aplicación móvil en Android Studio, la misma tiene como objetivo ser una aplicación interactiva para el usuario. La app permitirá diferentes funciones extendidas a la cerradura digital, las cuales son:
+                Componentes clave: microcontrolador (por ejemplo Arduino) que procesa las entradas, sensores biométricos (huella), lector RFID, teclado para código numérico y un actuador/mecanismo de cierre. La funcionalidad básica sigue tres etapas: 
               </p>
-              <ul>
-                <li>Apertura remota</li>
-                <li>Registro de accesos (denegado/validado)</li>
-                <li>Informes semanales</li>
-                <li>Cambio de clave</li>
-                <li>Notificación de alarma</li>
-              </ul>
 
-              <p>La aplicación será intuitiva y visualmente amigable, facilitando el control del sistema y su uso.</p>
-
-              <p>Una cerradura digital es un sistema diseñado para controlar el acceso a un espacio sin requerir de una llave física...</p>
-
-              <ul>
-                <li>Código Numérico, basado en el ingreso de una clave</li>
-                <li>Sensor Biométrico, basado en reconocimiento físico de la persona, por ejemplo, reconocimiento facial.</li>
-                <li>Identificación de radiofrecuencia (RFID), utilizado comúnmente con tarjetas o llaveros.</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Funcionalidad: etapas en su propia burbuja -->
-          <div class="bubble" id="funcionalidad">
-            <div class="inner">
-              <p>La funcionalidad básica de una cerradura digital consiste en tres etapas:</p>
               <ol>
-                <li><strong>Entrada:</strong> El usuario ingresa datos al sistema.</li>
-                <li><strong>Procesado:</strong> Un microcontrolador como Arduino verifica la información.</li>
-                <li><strong>Cierre:</strong> Se activa la apertura si la autenticación es válida.</li>
+                <li><strong>Entrada:</strong> el usuario presenta credenciales (huella/RFID/código).</li>
+                <li><strong>Procesado:</strong> el microcontrolador verifica la autenticidad contra la base de datos o credenciales almacenadas.</li>
+                <li><strong>Cierre/Apertura:</strong> si la autenticación es válida, se activa el mecanismo que abre la cerradura; si no, se deniega el acceso y puede registrarse el intento.</li>
               </ol>
 
-              <p>El objetivo principal de una cerradura es garantizar la seguridad del acceso a un espacio determinado.</p>
+              <p>
+                En resumen: diseño estético + autenticación triple + control remoto y registro; pensado para seguridad personal con posibilidad de comercialización y expansión a variantes visuales.
+              </p>
             </div>
           </div>
 
@@ -400,8 +396,8 @@
           <!-- Ventas / llamada a la acción -->
           <div class="bubble llamada-venta" id="ventas">
             <h2 class="titulo-negro">PROTEGE TUS OBJETOS VALIOSOS HOY MISMO!</h2>
-            <p>Disponibles para entrega inmediata. Contactanos o ingresa para comprar online.</p><br>
-            <a href="COMPRA.html" class="boton-hero"> Comprar Ahora</a>
+            <p>¡¡Para saber mas sobre la caja con cerradura digital entre a este lugar y contactenos ya mismo!! </p><br>
+            <a href="COMPRA.html" class="boton-hero"> CONTACTENOS AHORA</a>
           </div>
 
         </aside>
@@ -411,15 +407,13 @@
     </main>
 
     <footer>
-      <div style="text-align:center; padding:12px 0;">
-        <a href="https://www.instagram.com/cerradura.digital.tec3?igsh=Ym1jN2Fqc2JlYnU4" target="_blank" style="display:inline-block; margin-bottom:8px;">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" 
-               alt="Instagram" 
-               style="width: 40px; height: 40px; display:block; margin:0 auto;">
-        </a>
-        <p style="text-align: center; margin:6px 0;">&copy; 2025 Proyecto Caja Fuerte. Todos los derechos reservados.</p>
-        <p style="text-align: center; margin:0;">Escuela: EEST Nº3 Victor Mercante</p>
-      </div>
+         <a href="https://www.instagram.com/cerradura.digital.tec3?igsh=Ym1jN2Fqc2JlYnU4" target="_blank">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" 
+       alt="Instagram" 
+       style="width: 40px; height: 40px;">
+         </a>
+        <p style="text-align: center;">&copy; 2025 Proyecto Caja Fuerte. Todos los derechos reservados.</p>
+        <p style="text-align: center;">Escuela: EEST Nº3 Victor Mercante</p>
     </footer>
 
     <!-- SCRIPT: parallax simple que mueve el fondo al hacer scroll -->
