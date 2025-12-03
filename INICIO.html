@@ -61,15 +61,22 @@
       }
 
       /* NAVBAR con estilo Minecraft y efecto de destello */
+      /* *** CAMBIO: aplico aquí exactamente el color y efecto del código que me diste ***
+         Links del menú (tanto el inline en escritorio como el desplegable móvil)
+         usarán blanco + glow violeta (igual que en el código de referencia). */
       .navbar a {
         font-family: 'Minecraft', sans-serif !important;
         text-transform: uppercase;
-        color: #ffffff;
+        color: #ffffff; /* blanco como en tu código de referencia */
         text-decoration: none;
         font-size: 1.2rem;
         margin: 0 15px;
         position: relative;
         animation: glowFlash 2.5s infinite ease-in-out;
+        /* glow intenso que copia el efecto del código que pasaste */
+        text-shadow:
+          0 0 12px rgba(204,102,255,1),
+          0 0 28px rgba(128,0,255,0.95);
       }
 
       /* Botón Comprar Ahora */
@@ -116,12 +123,10 @@
 
       /* ================ AJUSTE QUE PEDISTE: PUNTOS PEGADOS A LA IZQUIERDA ================ */
 
-      /* Características (burbuja lateral): puntos pegados al borde izquierdo dentro de la burbuja.
-         usamos list-style-position: inside y un padding-left pequeño para que el punto quede cerca del borde */
       .beneficios {
-        padding-left: 8px;    /* pequeño espacio desde el borde interno de la burbuja */
+        padding-left: 8px;
         margin: 0;
-        list-style-position: inside; /* punto adentro, pegado al borde */
+        list-style-position: inside;
         text-align: left;
       }
       .beneficios li {
@@ -130,226 +135,269 @@
         color: rgba(0,0,0,0.85);
       }
 
-      /* Para listas dentro de cualquier burbuja: forzamos punto cercano al borde */
       .bubble ul, .bubble ol {
         margin: 0;
-        padding-left: 8px;       /* espacio muy pequeño entre borde y punto */
+        padding-left: 8px;
         list-style-position: inside;
       }
 
       /* ===========================
          NUEVAS REGLAS SOLO PARA REUBICAR "BURBUJAS"
-         (NO CAMBIAN COLORES, TIPOGRAFIAS NI EFECTOS)
          =========================== */
 
-      /* contenedor principal que organiza las burbujas */
       .content-grid {
         max-width: 1200px;
         margin: 18px auto;
         padding: 0 20px;
         box-sizing: border-box;
         display: grid;
-        grid-template-columns: 1fr 360px; /* contenido principal + barra lateral */
+        grid-template-columns: 1fr 360px;
         gap: 24px;
         align-items: start;
       }
 
-      /* Re-creamos la burbuja de fondo para el header (título + nav) */
       .header-bubble {
-        /* misma estética que .bubble (la clase .bubble ya aplica la apariencia),
-           aquí ajustamos el contenedor para que esté centrado y completo. */
         max-width: 1200px;
         margin: 30px auto;
-        /* <-- cambiado: reducimos el padding-top/bottom para hacer la burbuja menos alta */
         padding: 8px 12px;
         box-sizing: border-box;
         text-align: center;
       }
 
-      /* Ajuste solicitado: bajar imagen de "CERRADURA DIGITAL" más abajo */
       .logo-titulo {
-        margin-top: 8px; /* <-- cambiado: menos espacio arriba dentro de la burbuja */
-        text-align: center; /* asegura que la imagen quede centrada en su contenedor */
+        margin-top: 8px;
+        text-align: center;
       }
-      .logo-titulo h1 {
-        margin: 0;
-      }
-      .logo-titulo h1 img {
-        display: block;
-        margin: 0 auto;
-      }
+      .logo-titulo h1 { margin: 0; }
+      .logo-titulo h1 img { display: block; margin: 0 auto; }
 
-      /* Cada "burbuja" mantiene su contenido pero ahora es un bloque con padding */
       .bubble {
         padding: 20px;
         border-radius: 12px;
         box-sizing: border-box;
-
-        /* COLOR: tono amarillo suave (coincide con el estilo que pediste) */
         background-color: #fff8dc;
-
-        /* BORDE y SOMBRA: igual que la burbuja objetivo que mostraste */
-        border: 3px solid rgba(178,102,255,0.95); /* borde violeta suave */
+        border: 3px solid rgba(178,102,255,0.95);
         box-shadow:
           0 10px 30px rgba(0,0,0,0.20),
-          0 0 0 6px rgba(178,102,255,0.06) inset; /* sutil glow interior para profundidad */
-
-        /* si tenés patrón lo podés mantener (dejé la regla, no altera layout si la imagen no existe) */
+          0 0 0 6px rgba(178,102,255,0.06) inset;
         background-image: url('imagenes/bubble_pattern.jpg');
         background-repeat: repeat;
         background-size: 60px 60px;
       }
 
-      /* columna principal (izquierda) agrupa bloques de texto */
-      .main-column {
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-      }
+      .main-column { display: flex; flex-direction: column; gap: 18px; }
 
-      /* columna lateral (derecha) para resúmenes, ventas, integrantes */
-      .side-column {
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-        align-items: flex-start; /* hace que las burbujas pequeñas queden pegadas al lado izquierdo de su columna */
-      }
+      .side-column { display: flex; flex-direction: column; gap: 18px; align-items: flex-start; }
 
-      /* hacemos que las burbujas en la columna lateral tengan ancho fijo y queden cerca del borde izquierdo,
-         con un pequeño espacio desde el borde del contenedor padre (para que no queden totalmente pegadas) */
-      .side-column .bubble {
-        width: 320px;            /* ancho controlado */
-        margin-left: 6px;        /* pequeño espacio desde la divisoria */
-      }
+      .side-column .bubble { width: 320px; margin-left: 6px; }
 
-      /* MOVER ABAJO las burbujas específicas solicitadas (por-que y ventas) */
-      /* aumentamos margin-top para que estén más abajo dentro de la columna lateral */
-      #por-que {
-        margin-top: 60px;
-      }
-      #ventas {
-        margin-top: 60px;
-      }
+      #por-que { margin-top: 60px; }
+      #ventas { margin-top: 60px; }
+      #resumen { margin-top: 60px; }
 
-      /* Ajuste solicitado: bajar la burbuja de resumen/introducción para alinearla con #por-que */
-      #resumen {
-        margin-top: 60px;
-      }
+      .bubble .inner { max-width: 860px; margin: 0; }
 
-      /* Acomodo específico: reducir anchura máxima de párrafos en main para mejor lectura */
-      .bubble .inner {
-        max-width: 860px;
-        margin: 0;
-      }
+      .bubble h2.titulo-negro { color: #000000 !important; }
 
-      /* Asegurar que los títulos dentro de burbujas mantengan el color negro de Minecraft */
-      .bubble h2.titulo-negro {
-        color: #000000 !important;
-      }
-
-      /* ===========================
-         ESTILO PARA LISTA DE INTEGRANTES (PEQUEÑAS "BURBUJAS" INTERIORES)
-         Ajustado para que las pequeñas burbujas con los nombres estén pegadas al borde
-         izquierdo del contenedor padre y se vean prolijas.
-         =========================== */
-      .lista-integrantes {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      /* -----------------
-         CAMBIO PRINCIPAL (aquí): 
-         - removí el margin-left para que estén pegadas a la izquierda del fondo.
-         - las hago 100% del ancho disponible dentro de la burbuja padre.
-         - ajusto padding para que el texto quede cerca del borde izquierdo pero con un pequeño
-           espacio (12px) para que no toque exactamente la esquina.
-         - mantengo el mismo estilo visual (borde violeta, radio, etc.)
-         ----------------- */
+      .lista-integrantes { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
       .lista-integrantes li {
-        background-color: #fff8dc; /* mismo color suave */
+        background-color: #fff8dc;
         border: 3px solid rgba(178,102,255,0.95);
         border-radius: 10px;
-        padding: 12px 16px; /* menos padding vertical y algo horizontal */
+        padding: 12px 16px;
         box-sizing: border-box;
-        width: 100%;          /* ocupa todo el ancho interior de la burbuja padre */
-        margin-left: 0;       /* pegado al borde izquierdo del contenedor padre */
+        width: 100%;
+        margin-left: 0;
       }
+      .lista-integrantes li strong { font-weight: 700; color: rgba(0,0,0,0.9); }
+      #integrantes h2.titulo-negro { text-align: center; display: block; margin-bottom: 10px; }
 
-      .lista-integrantes li strong {
-        font-weight: 700;
-        color: rgba(0,0,0,0.9);
-      }
-
-      /* Centrar el título "INTEGRANTES DEL PROYECTO" dentro de su burbuja */
-      #integrantes h2.titulo-negro {
-        text-align: center;
-        display: block;
-        margin-bottom: 10px;
-      }
-
-      /* En móviles, pasamos a una sola columna (stack) y ajustamos anchos */
       @media (max-width: 980px) {
-        .content-grid {
-          grid-template-columns: 1fr;
-        }
-        .hero {
-          padding: 12px;
-        }
-        .side-column .bubble {
-          width: 100%;
-          margin-left: 0;
-        }
-        /* reducimos el offset en pantallas más pequeñas */
+        .content-grid { grid-template-columns: 1fr; }
+        .hero { padding: 12px; }
+        .side-column .bubble { width: 100%; margin-left: 0; }
         #por-que { margin-top: 30px; }
         #ventas { margin-top: 30px; }
-
-        /* Alineación móvil: reducir margen superior del resumen para mantener diseño fluido */
         #resumen { margin-top: 30px; }
-
-        /* para móviles devolvemos listas a un padding cómodo */
         .bubble ul, .bubble ol { padding-left: 18px; list-style-position: outside; }
         .lista-integrantes li { width: 100%; margin-left: 0; padding: 12px 16px; }
       }
+
+      /* ------------------------------
+         AÑADIMOS AQUÍ: estilos del menú hamburguesa
+         ------------------------------ */
+
+      .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: center; /* desktop centered links */
+        gap: 16px;
+        position: relative;
+      }
+
+      .nav-list {
+        list-style: none;
+        display: flex;
+        gap: 18px;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+      }
+
+      /* Desktop links: ahora usan el color y efecto exactos del código que me pasaste:
+         blanco + glow violeta (text-shadow). */
+      .nav-list a {
+        color: #ffffff; /* blanco */
+        text-decoration: none;
+        font-family: 'Minecraft', sans-serif !important;
+        text-transform: uppercase;
+        font-size: 1.2rem;
+        /* glow igual que .navbar a del código de referencia */
+        text-shadow:
+          0 0 12px rgba(204,102,255,1),
+          0 0 28px rgba(128,0,255,0.95);
+      }
+
+      /* Botón hamburguesa: hidden on desktop */
+      .hamburger {
+        display: none;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+        margin-right: 6px;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /* Estructura visual del botón (agrandado) */
+      .hamburger-box {
+        width: 48px;
+        height: 34px;
+        display: inline-block;
+        position: relative;
+      }
+      .hamburger-inner,
+      .hamburger-inner::before,
+      .hamburger-inner::after {
+        display: block;
+        background-color: #000;
+        position: absolute;
+        height: 4px;
+        border-radius: 4px;
+        width: 100%;
+        transition: transform 0.25s ease, opacity 0.2s ease;
+      }
+      .hamburger-inner { top: 50%; transform: translateY(-50%); }
+      .hamburger-inner::before { content: ""; top: -12px; }
+      .hamburger-inner::after { content: ""; top: 12px; }
+
+      .hamburger[aria-expanded="true"] .hamburger-inner { transform: rotate(45deg); }
+      .hamburger[aria-expanded="true"] .hamburger-inner::before {
+        transform: rotate(-90deg) translateX(-8px);
+        top: 0;
+      }
+      .hamburger[aria-expanded="true"] .hamburger-inner::after { opacity: 0; }
+
+      /* Responsive: hide inline links, show hamburger and centered dropdown */
+      @media (max-width: 980px) {
+        .hamburger { display: inline-block; }
+
+        .nav-list {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%) scaleY(0);
+          top: calc(100% + 8px);
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+          background-color: #fff8dc;
+          border: 3px solid rgba(178,102,255,0.95);
+          padding: 14px;
+          border-radius: 10px;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+          transform-origin: top center;
+          opacity: 0;
+          pointer-events: none;
+          transition: transform 0.18s ease, opacity 0.18s ease;
+          z-index: 30;
+          min-width: 240px;
+        }
+
+        .nav-list.open {
+          transform: translateX(-50%) scaleY(1);
+          opacity: 1;
+          pointer-events: auto;
+        }
+
+        .nav-list li { width: 100%; }
+
+        /*
+          IMPORTANT: según tu pedido, aplico en el desplegable móvil EL MISMO color y efecto
+          del código que me pasaste: blanco + glow violeta (igual que los links en escritorio).
+          De esta forma el menú inline y el desplegable comparten exactamente el color/efecto.
+        */
+        .nav-list a {
+          display: block;
+          width: 100%;
+          padding: 10px 14px;
+          text-align: center;
+          color: #ffffff; /* blanco */
+          font-size: 1.15rem;
+          background: transparent;
+          text-shadow:
+            0 0 12px rgba(204,102,255,1),
+            0 0 28px rgba(128,0,255,0.95);
+        }
+      }
+
     </style>
 </head>
 <body style="
     margin:0;
     font-family:'Segoe UI', Tahoma, sans-serif;
     background-image:url('imagenes/minecraft_fondillo.jpg');
-    background-repeat: repeat;            /* <- DUPLICA (tilea) la imagen en vez de hacer zoom */
-    background-size: 220px auto;          /* <- aumenté el tamaño del tile (más grande que antes) */
-    background-position: center top;      /* posicion inicial (se moverá por JS) */
-    background-attachment:scroll; /* cambiado a scroll para permitir movimiento por JS */
+    background-repeat: repeat;
+    background-size: 220px auto;
+    background-position: center top;
+    background-attachment:scroll;
 ">
 
  <!-- Header envuelto en la burbuja para que la caja amarilla quede completa -->
- <header class="encabezado-lateral header-bubble bubble">
+ <header class="encabezado-lateral header-bubble bubble" role="banner" aria-label="Cabecera">
   <div class="logo-titulo">
     <h1><img src="imagenes/minecraft_title.png" width="660" height="55" alt="CERRADURA DIGITAL"></h1>
   </div>
 
-  <nav class="navbar">
-    <a href="INTEGRANTES.html">Integrantes</a>
-    <a href="COMPONENTES.html">Componentes</a>
-    <a href="funcionamiento.html">Funcionamiento</a>
-    <a href="PROCESO.html">Proceso</a>
+  <!-- NAV: botón hamburguesa + lista de enlaces -->
+  <nav class="navbar" id="main-nav" role="navigation" aria-label="Navegación principal">
+    <!-- Botón hamburguesa (accesible) -->
+    <button class="hamburger" id="hamburgerBtn" aria-expanded="false" aria-controls="navList" aria-label="Abrir menú de navegación">
+      <span class="hamburger-box">
+        <span class="hamburger-inner"></span>
+      </span>
+    </button>
+
+    <!-- Menú de navegación -->
+    <ul class="nav-list" id="navList" role="menubar" aria-label="Enlaces principales">
+      <li role="none"><a role="menuitem" href="INTEGRANTES.html">Integrantes</a></li>
+      <li role="none"><a role="menuitem" href="COMPONENTES.html">Componentes</a></li>
+      <li role="none"><a role="menuitem" href="funcionamiento.html">Funcionamiento</a></li>
+      <li role="none"><a role="menuitem" href="PROCESO.html">Proceso</a></li>
+      <li role="none"><a role="menuitem" href="FORMULARIO.html">Formulario</a></li>
+    </ul>
   </nav>
 </header>
 
-    <main>
+    <main role="main" aria-label="Contenido principal">
 
       <!-- CONTENEDOR GRID: luego columnas -->
       <div class="content-grid">
 
         <!-- COLUMNA PRINCIPAL (IZQUIERDA) -->
-        <div class="main-column">
+        <div class="main-column" role="region" aria-label="Columna principal">
 
-          <!-- RESUMEN UNIFICADO (reemplaza introducción, app y funcionalidad) -->
-          <div class="bubble" id="resumen">
+          <!-- RESUMEN UNIFICADO -->
+          <div class="bubble" id="resumen" role="region" aria-label="Resumen del proyecto">
             <h2 class="titulo-negro">RESUMEN DEL PROYECTO</h2>
             <div class="inner">
               <p>
@@ -379,10 +427,10 @@
         </div> <!-- /.main-column -->
 
         <!-- COLUMNA LATERAL (DERECHA) -->
-        <aside class="side-column">
+        <aside class="side-column" role="complementary" aria-label="Barra lateral">
 
-          <!-- 'Por qué elegir' en su propia burbuja -->
-          <div class="bubble" id="por-que">
+          <!-- 'Por qué elegir' -->
+          <div class="bubble" id="por-que" role="region" aria-label="Por qué elegir nuestra cerradura">
             <h2 class="titulo-negro">POR QUE ELEGIR NUESTRA CERRADURA?</h2>
             <ul class="beneficios">
               <li>Seguridad de nivel bancario con autenticacion triple</li>
@@ -394,7 +442,7 @@
           </div>
 
           <!-- Ventas / llamada a la acción -->
-          <div class="bubble llamada-venta" id="ventas">
+          <div class="bubble llamada-venta" id="ventas" role="region" aria-label="Llamada a la acción">
             <h2 class="titulo-negro">PROTEGE TUS OBJETOS VALIOSOS HOY MISMO!</h2>
             <p>¡¡Para saber mas sobre la caja con cerradura digital entre a este lugar y contactenos ya mismo!! </p><br>
             <a href="COMPRA.html" class="boton-hero"> CONTACTENOS AHORA</a>
@@ -406,8 +454,8 @@
 
     </main>
 
-    <footer>
-         <a href="https://www.instagram.com/cerradura.digital.tec3?igsh=Ym1jN2Fqc2JlYnU4" target="_blank">
+    <footer role="contentinfo" aria-label="Pie de página">
+         <a href="https://www.instagram.com/cerradura.digital.tec3?igsh=Ym1jN2Fqc2JlYnU4" target="_blank" rel="noopener">
   <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" 
        alt="Instagram" 
        style="display:block;margin:0 auto;width: 40px; height: 40px;">
@@ -419,10 +467,7 @@
     <!-- SCRIPT: parallax simple que mueve el fondo al hacer scroll -->
     <script>
       (function() {
-        // velocidad: cuánto se desplaza el fondo respecto al scroll (0 = fondo fijo, 1 = igual que contenido)
         const speed = 0.35;
-
-        // rendimiento: limitamos el trabajo en scroll usando requestAnimationFrame
         let latestKnownScrollY = 0;
         let ticking = false;
 
@@ -432,20 +477,16 @@
         }
 
         function requestTick() {
-          if (!ticking) {
-            requestAnimationFrame(update);
-          }
+          if (!ticking) requestAnimationFrame(update);
           ticking = true;
         }
 
         function update() {
           const y = Math.round(latestKnownScrollY * speed);
-          // movemos el fondo en Y (negativo para parallax que parece moverse más despacio hacia arriba)
           document.body.style.backgroundPosition = 'center ' + (-y) + 'px';
           ticking = false;
         }
 
-        // inicializamos la posición al cargar la página
         window.addEventListener('load', () => {
           latestKnownScrollY = window.scrollY || window.pageYOffset;
           update();
@@ -455,7 +496,39 @@
       })();
     </script>
 
+    <!-- SCRIPT: control del menú hamburguesa -->
+    <script>
+      (function(){
+        const btn = document.getElementById('hamburgerBtn');
+        const navList = document.getElementById('navList');
+
+        if (!btn || !navList) return;
+
+        btn.addEventListener('click', function(){
+          const expanded = this.getAttribute('aria-expanded') === 'true';
+          this.setAttribute('aria-expanded', String(!expanded));
+          navList.classList.toggle('open', !expanded);
+        });
+
+        // Cerrar con Escape y permitir navegación por teclado
+        document.addEventListener('keydown', function(e){
+          if (e.key === 'Escape') {
+            btn.setAttribute('aria-expanded', 'false');
+            navList.classList.remove('open');
+            btn.focus();
+          }
+        });
+
+        // Cerrar al click fuera (móvil)
+        document.addEventListener('click', function(e){
+          if (!navList.classList.contains('open')) return;
+          if (e.target.closest('#navList') || e.target.closest('#hamburgerBtn')) return;
+          btn.setAttribute('aria-expanded', 'false');
+          navList.classList.remove('open');
+        });
+      })();
+    </script>
+
 </body>
 </html>
-
 
