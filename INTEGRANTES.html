@@ -312,6 +312,199 @@
       * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
     }
 
+    /* ===========================
+       CORNER HAMBURGER (añadido igual que en COMPONENTES)
+       - botón pequeño en esquina superior derecha
+       - al click abre menú interactivo igual al de INICIO
+       =========================== */
+
+    .corner-hamburger-btn {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 12000;
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      background: rgba(0,0,0,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+      border: 2px solid rgba(178,102,255,0.9);
+      cursor: pointer;
+    }
+
+    .corner-hamburger-btn .bar,
+    .corner-hamburger-btn .bar::before,
+    .corner-hamburger-btn .bar::after {
+      display: block;
+      width: 22px;
+      height: 3px;
+      background: #fff;
+      border-radius: 2px;
+      position: relative;
+    }
+    .corner-hamburger-btn .bar::before,
+    .corner-hamburger-btn .bar::after {
+      content: "";
+      position: absolute;
+      left: 0;
+    }
+    .corner-hamburger-btn .bar::before { top: -7px; }
+    .corner-hamburger-btn .bar::after  { top: 7px; }
+
+    .corner-hamburger-btn[aria-expanded="true"] .bar {
+      background: transparent;
+    }
+    .corner-hamburger-btn[aria-expanded="true"] .bar::before {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .corner-hamburger-btn[aria-expanded="true"] .bar::after {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .corner-nav {
+      position: fixed;
+      top: calc(12px + 42px + 8px);
+      right: 12px;
+      z-index: 11999;
+      min-width: 200px;
+      max-width: calc(100% - 32px);
+      background: #fff8dc;
+      border: 3px solid rgba(178,102,255,0.95);
+      border-radius: 10px;
+      box-shadow: 0 12px 34px rgba(0,0,0,0.25);
+      padding: 6px;
+      transform-origin: top right;
+      transform: scaleY(0);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+      overflow: hidden;
+    }
+
+    .corner-nav.open {
+      transform: scaleY(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .corner-nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 4px 0;
+    }
+
+    .corner-nav li {
+      border-bottom: 2px solid rgba(128,0,255,0.22);
+    }
+    .corner-nav li:last-child { border-bottom: none; }
+
+    .corner-nav a {
+      display: block;
+      padding: 12px 16px;
+      text-decoration: none;
+      font-family: 'Minecraft', sans-serif;
+      text-transform: uppercase;
+      font-size: 1rem;
+      color: #ffffff;
+      text-shadow:
+        0 0 12px rgba(204,102,255,1),
+        0 0 28px rgba(128,0,255,0.95);
+      background: transparent;
+      text-align: left;
+    }
+
+    @media (max-width: 360px) {
+      .corner-hamburger-btn { top: 10px; right: 10px; width: 40px; height: 40px; }
+      .corner-nav { right: 8px; top: calc(10px + 40px + 6px); min-width: 180px; }
+    }
+
+  </style>
+
+  <!-- CORNER HAMBURGER: botón pequeño en esquina superior derecha -->
+  <button class="corner-hamburger-btn" id="cornerHamburger" aria-expanded="false" aria-controls="cornerNav" aria-label="Abrir menú">
+    <span class="bar" aria-hidden="true"></span>
+  </button>
+
+  <!-- menú interactivo replicando el contenido del INICIO -->
+  <nav id="cornerNav" class="corner-nav" role="navigation" aria-label="Menú principal">
+    <ul>
+      <li><a href="INTEGRANTES.html">Integrantes</a></li>
+      <li><a href="COMPONENTES.html">Componentes</a></li>
+      <li><a href="funcionamiento.html">Funcionamiento</a></li>
+      <li><a href="PROCESO.html">Proceso</a></li>
+      <li><a href="FORMULARIO.html">Formulario</a></li>
+    </ul>
+  </nav>
+
+  <!-- ADICION: BOTÓN QR + MODAL (idéntico al usado en las otras páginas) -->
+  <style>
+    .corner-qr-btn {
+      position: fixed;
+      top: calc(12px + 42px + 8px); /* justo debajo del hamburger */
+      right: 12px;
+      z-index: 12000;
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      background: rgba(0,0,0,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+      border: 2px solid rgba(178,102,255,0.9);
+      cursor: pointer;
+    }
+    .corner-qr-btn svg { display:block; width:20px; height:20px; }
+    .corner-qr-btn[aria-expanded="true"] { outline: 2px solid rgba(128,0,255,0.18); }
+
+    .qr-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.55);
+      z-index: 12100;
+      padding: 18px;
+    }
+    .qr-modal.open { display: flex; }
+
+    .qr-content {
+      background: #fff;
+      padding: 14px;
+      border-radius: 12px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+      border: 4px solid rgba(178,102,255,0.95);
+      max-width: 92%;
+      width: 420px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .qr-content img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .qr-close {
+      margin-top: 10px;
+      display: inline-block;
+      padding: 8px 12px;
+      background: #000;
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-family: 'Minecraft', sans-serif;
+      text-transform: uppercase;
+    }
+
+    @media (max-width:460px) {
+      .qr-content { width: 320px; }
+    }
   </style>
 
   <!-- ESTRUCTURA: burbuja "INICIO" arriba, 3 burbujas arriba y 3 abajo -->
@@ -365,8 +558,116 @@
     </div>
   </div>
 
+  <!-- MODAL con la imágen del QR (insertado aquí para que la ruta funcione igual que en otras páginas) -->
+  <div id="qrModal" class="qr-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Código QR">
+    <div class="qr-content" role="document">
+      <img src="imagenes/cerradura_qr.png" alt="QR - cerradura-digital (escanea para abrir sitio)">
+      <a href="#" class="qr-close" id="qrClose">Cerrar</a>
+    </div>
+  </div>
+
   <!-- NO CAMBIÉ NADA MÁS de tu código original excepto:
-       - aplicar efecto violeta/neón al texto INICIO
-       - reducir la distancia del footer para que esté más cerca de las fotos -->
+       - añadir botón hamburguesa en esquina con menú interactivo (ya presente)
+       - añadir botón QR + modal QR (CSS, HTML y JS necesarios)
+  -->
+
+  <script>
+    (function(){
+      const btn = document.getElementById('cornerHamburger');
+      const nav = document.getElementById('cornerNav');
+
+      if (!btn || !nav) return;
+
+      function setOpen(open) {
+        btn.setAttribute('aria-expanded', String(open));
+        nav.classList.toggle('open', open);
+      }
+
+      btn.addEventListener('click', function(e){
+        const expanded = this.getAttribute('aria-expanded') === 'true';
+        setOpen(!expanded);
+      });
+
+      // Cerrar con Escape
+      document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape') {
+          setOpen(false);
+          btn.focus();
+        }
+      });
+
+      // Cerrar al click fuera
+      document.addEventListener('click', function(e){
+        if (!nav.classList.contains('open')) return;
+        if (e.target.closest('#cornerNav') || e.target.closest('#cornerHamburger')) return;
+        setOpen(false);
+      });
+    })();
+  </script>
+
+  <!-- JS para el botón QR / modal QR (idéntico a las otras páginas) -->
+  <script>
+    (function(){
+      // crear referencia al botón QR: si no existe (página previa no lo tenía) lo creamos dinámicamente
+      // pero aquí lo añadimos por defecto al DOM para mantener exactamente el mismo comportamiento.
+      // Si ya hay un elemento #cornerQrBtn en el DOM, se usará; si no, creamos uno.
+      let qrBtn = document.getElementById('cornerQrBtn');
+      if (!qrBtn) {
+        qrBtn = document.createElement('button');
+        qrBtn.className = 'corner-qr-btn';
+        qrBtn.id = 'cornerQrBtn';
+        qrBtn.setAttribute('aria-expanded', 'false');
+        qrBtn.setAttribute('aria-controls', 'qrModal');
+        qrBtn.setAttribute('aria-label', 'Mostrar QR');
+        qrBtn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2" y="2" width="6" height="6" fill="#fff"></rect><rect x="10" y="2" width="4" height="4" fill="#fff"></rect><rect x="2" y="10" width="4" height="4" fill="#fff"></rect><rect x="16" y="2" width="6" height="6" fill="#fff"></rect><rect x="16" y="10" width="6" height="6" fill="#fff"></rect><rect x="10" y="16" width="6" height="6" fill="#fff"></rect></svg>';
+        // insertamos justo después del cornerHamburger so it appears below it
+        const hamb = document.getElementById('cornerHamburger');
+        if (hamb && hamb.parentNode) hamb.parentNode.insertBefore(qrBtn, hamb.nextSibling);
+        else document.body.appendChild(qrBtn);
+      }
+
+      const qrModal = document.getElementById('qrModal');
+      const qrClose = document.getElementById('qrClose');
+
+      if (!qrBtn || !qrModal) return;
+
+      function setQrOpen(open) {
+        qrBtn.setAttribute('aria-expanded', String(open));
+        if (open) {
+          qrModal.classList.add('open');
+          qrModal.setAttribute('aria-hidden', 'false');
+          // mover foco al modal para accesibilidad
+          if (qrClose) qrClose.focus();
+        } else {
+          qrModal.classList.remove('open');
+          qrModal.setAttribute('aria-hidden', 'true');
+          qrBtn.focus();
+        }
+      }
+
+      qrBtn.addEventListener('click', function(e){
+        const isOpen = this.getAttribute('aria-expanded') === 'true';
+        setQrOpen(!isOpen);
+      });
+
+      // cerrar cuando se pulsa el botón Cerrar dentro del modal
+      if (qrClose) {
+        qrClose.addEventListener('click', function(e){
+          e.preventDefault();
+          setQrOpen(false);
+        });
+      }
+
+      // cerrar con escape
+      document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape') setQrOpen(false);
+      });
+
+      // cerrar al hacer click fuera del contenido
+      qrModal.addEventListener('click', function(e){
+        if (e.target === qrModal) setQrOpen(false);
+      });
+    })();
+  </script>
 </body>
 </html>
