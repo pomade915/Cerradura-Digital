@@ -279,6 +279,8 @@
         display: inline-block;
         position: relative;
       }
+
+      /* Middle bar + pseudo bars (antes/after) */
       .hamburger-inner,
       .hamburger-inner::before,
       .hamburger-inner::after {
@@ -288,18 +290,30 @@
         height: 4px;
         border-radius: 4px;
         width: 100%;
+        left: 0;
         transition: transform 0.25s ease, opacity 0.2s ease;
       }
       .hamburger-inner { top: 50%; transform: translateY(-50%); }
       .hamburger-inner::before { content: ""; top: -12px; }
       .hamburger-inner::after { content: ""; top: 12px; }
 
-      .hamburger[aria-expanded="true"] .hamburger-inner { transform: rotate(45deg); }
-      .hamburger[aria-expanded="true"] .hamburger-inner::before {
-        transform: rotate(-90deg) translateX(-8px);
-        top: 0;
+      /* Make a complete X when expanded:
+         - hide middle bar (make it transparent)
+         - position both pseudo-elements centered and rotate them to form an X
+         This replaces the previous partial transform that could appear cut on some screens.
+      */
+      .hamburger[aria-expanded="true"] .hamburger-inner {
+        background-color: transparent;
       }
-      .hamburger[aria-expanded="true"] .hamburger-inner::after { opacity: 0; }
+      .hamburger[aria-expanded="true"] .hamburger-inner::before,
+      .hamburger[aria-expanded="true"] .hamburger-inner::after {
+        top: 50%;
+        transform: translateY(-50%) rotate(45deg);
+        left: 0;
+      }
+      /* set opposite rotations so they form an X */
+      .hamburger[aria-expanded="true"] .hamburger-inner::before { transform: translateY(-50%) rotate(45deg); }
+      .hamburger[aria-expanded="true"] .hamburger-inner::after  { transform: translateY(-50%) rotate(-45deg); }
 
       /* Responsive: hide inline links, show hamburger and centered dropdown */
       @media (max-width: 980px) {
@@ -312,11 +326,12 @@
           transform: translateX(-50%) scaleY(0);
           top: calc(100% + 8px);
           flex-direction: column;
-          align-items: center;
-          gap: 10px;
+          /* colocamos los items alineados al inicio (borde izquierdo de la burbuja) */
+          align-items: flex-start;
+          gap: 0; /* quitamos gap para controlar separación con borders */
           background-color: #fff8dc;
           border: 3px solid rgba(178,102,255,0.95);
-          padding: 14px;
+          padding: 6px 8px; /* reducido para que las líneas queden cerca de los botones */
           border-radius: 10px;
           box-shadow: 0 10px 30px rgba(0,0,0,0.15);
           transform-origin: top center;
@@ -337,7 +352,17 @@
           pointer-events: auto;
         }
 
-        .nav-list li { width: 100%; }
+        /* cada item ocupa todo el ancho y tiene una línea separadora abajo (más notoria) */
+        .nav-list li {
+          width: 100%;
+          box-sizing: border-box;
+          border-bottom: 2px solid rgba(128,0,255,0.22); /* línea de separación violeta más notoria */
+        }
+
+        /* quitar la línea del último elemento para limpieza visual */
+        .nav-list li:last-child {
+          border-bottom: none;
+        }
 
         /*
           IMPORTANT: según tu pedido, aplico en el desplegable móvil EL MISMO color y efecto
@@ -347,8 +372,10 @@
         .nav-list a {
           display: block;
           width: 100%;
-          padding: 10px 14px;
-          text-align: center;
+          /* alineo el texto a la izquierda (pegado al borde interno) para que los botones
+             no estén centrados sino en una punta del contenedor como pediste */
+          text-align: left;
+          padding: 14px 16px 14px 22px; /* más padding-left para pegarlos al borde izquierdo */
           color: #ffffff; /* blanco */
           font-size: 1.15rem;
           background: transparent;
@@ -356,6 +383,81 @@
             0 0 12px rgba(204,102,255,1),
             0 0 28px rgba(128,0,255,0.95);
         }
+      }
+
+      /* ===========================
+         NUEVO: BOTÓN QR DEBAJO DEL HAMBURGER + MODAL QR
+         (idéntico al implementado en las otras páginas)
+         =========================== */
+
+      .corner-qr-btn {
+        position: fixed;
+        top: calc(12px + 42px + 8px); /* justo debajo del hamburger */
+        right: 12px;
+        z-index: 12000;
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        background: rgba(0,0,0,0.75);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+        border: 2px solid rgba(178,102,255,0.9);
+        cursor: pointer;
+      }
+
+      .corner-qr-btn svg { display:block; width:20px; height:20px; }
+
+      .corner-qr-btn[aria-expanded="true"] {
+        outline: 2px solid rgba(128,0,255,0.18);
+      }
+
+      .qr-modal {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0,0,0,0.55);
+        z-index: 12100;
+        padding: 18px;
+      }
+
+      .qr-modal.open { display: flex; }
+
+      .qr-content {
+        background: #fff;
+        padding: 14px;
+        border-radius: 12px;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+        border: 4px solid rgba(178,102,255,0.95);
+        max-width: 92%;
+        width: 420px;
+        box-sizing: border-box;
+        text-align: center;
+      }
+
+      .qr-content img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .qr-close {
+        margin-top: 10px;
+        display: inline-block;
+        padding: 8px 12px;
+        background: #000;
+        color: #fff;
+        border-radius: 8px;
+        text-decoration: none;
+        font-family: 'Minecraft', sans-serif;
+        text-transform: uppercase;
+      }
+
+      @media (max-width:460px) {
+        .qr-content { width: 320px; }
       }
 
     </style>
@@ -383,6 +485,18 @@
       <span class="hamburger-box">
         <span class="hamburger-inner"></span>
       </span>
+    </button>
+
+    <!-- BOTÓN QR justo debajo del hamburger (muestra modal con QR al presionar) -->
+    <button class="corner-qr-btn" id="cornerQrBtn" aria-expanded="false" aria-controls="qrModal" aria-label="Mostrar QR">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="2" y="2" width="6" height="6" fill="#fff"></rect>
+        <rect x="10" y="2" width="4" height="4" fill="#fff"></rect>
+        <rect x="2" y="10" width="4" height="4" fill="#fff"></rect>
+        <rect x="16" y="2" width="6" height="6" fill="#fff"></rect>
+        <rect x="16" y="10" width="6" height="6" fill="#fff"></rect>
+        <rect x="10" y="16" width="6" height="6" fill="#fff"></rect>
+      </svg>
     </button>
 
     <!-- Menú de navegación -->
@@ -472,6 +586,14 @@
         <p style="text-align: center;">Escuela: EEST Nº3 Victor Mercante</p>
     </footer>
 
+    <!-- MODAL con la imágen del QR (idéntico a las otras páginas) -->
+    <div id="qrModal" class="qr-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Código QR">
+      <div class="qr-content" role="document">
+        <img src="imagenes/cerradura_qr.png" alt="QR - cerradura-digital (escanea para abrir sitio)">
+        <a href="#" class="qr-close" id="qrClose">Cerrar</a>
+      </div>
+    </div>
+
     <!-- SCRIPT: parallax simple que mueve el fondo al hacer scroll -->
     <script>
       (function() {
@@ -537,6 +659,53 @@
       })();
     </script>
 
+    <!-- JS para el botón QR / modal QR (idéntico al implementado en las otras páginas) -->
+    <script>
+      (function(){
+        const qrBtn = document.getElementById('cornerQrBtn');
+        const qrModal = document.getElementById('qrModal');
+        const qrClose = document.getElementById('qrClose');
+
+        if (!qrBtn || !qrModal) return;
+
+        function setQrOpen(open) {
+          qrBtn.setAttribute('aria-expanded', String(open));
+          if (open) {
+            qrModal.classList.add('open');
+            qrModal.setAttribute('aria-hidden', 'false');
+            // mover foco al modal para accesibilidad
+            if (qrClose) qrClose.focus();
+          } else {
+            qrModal.classList.remove('open');
+            qrModal.setAttribute('aria-hidden', 'true');
+            qrBtn.focus();
+          }
+        }
+
+        qrBtn.addEventListener('click', function(e){
+          const isOpen = this.getAttribute('aria-expanded') === 'true';
+          setQrOpen(!isOpen);
+        });
+
+        // cerrar cuando se pulsa el botón Cerrar dentro del modal
+        if (qrClose) {
+          qrClose.addEventListener('click', function(e){
+            e.preventDefault();
+            setQrOpen(false);
+          });
+        }
+
+        // cerrar con escape
+        document.addEventListener('keydown', function(e){
+          if (e.key === 'Escape') setQrOpen(false);
+        });
+
+        // cerrar al hacer click fuera del contenido
+        qrModal.addEventListener('click', function(e){
+          if (e.target === qrModal) setQrOpen(false);
+        });
+      })();
+    </script>
+
 </body>
 </html>
-
