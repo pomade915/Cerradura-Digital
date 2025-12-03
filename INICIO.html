@@ -162,6 +162,8 @@
         padding: 8px 12px;
         box-sizing: border-box;
         text-align: center;
+        /* Aseguramos que el menú desplegable no sea recortado por el contenedor */
+        overflow: visible;
       }
 
       .logo-titulo {
@@ -233,6 +235,7 @@
         justify-content: center; /* desktop centered links */
         gap: 16px;
         position: relative;
+        z-index: 40; /* sitúa la barra de navegación por encima de la cabecera si es necesario */
       }
 
       .nav-list {
@@ -303,6 +306,7 @@
         .hamburger { display: inline-block; }
 
         .nav-list {
+          /* mantengo absolute pero aseguro que no se recorte y que se muestre por encima de todo */
           position: absolute;
           left: 50%;
           transform: translateX(-50%) scaleY(0);
@@ -319,8 +323,12 @@
           opacity: 0;
           pointer-events: none;
           transition: transform 0.18s ease, opacity 0.18s ease;
-          z-index: 30;
+          /* Evitamos que el menú en móvil sea más ancho que la pantalla y nos aseguramos de que
+             quede por encima de cualquier otro elemento (fix al problema de estar "cortado") */
+          z-index: 10000;
           min-width: 240px;
+          max-width: calc(100% - 32px);
+          box-sizing: border-box;
         }
 
         .nav-list.open {
