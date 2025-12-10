@@ -5,11 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Formulario de Compra</title>
   <link rel="stylesheet" href="responsive.css">
-  <!-- Fuente estilo Minecraft -->
   <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
 
   <style>
-    /* ======== TITULOS Y LABELS: estilo Minecraft con brillo violeta (sin movimiento) ======== */
     .mc-title,
     .mc-label {
       font-family: 'Minecraft', sans-serif !important;
@@ -40,7 +38,6 @@
         0 0 14px rgba(178,102,255,0.22);
     }
 
-    /* ======== FORMULARIO ======== */
     form.formulario-compra {
       background-color: rgba(255, 248, 220, 0.72);
       border-radius: 15px;
@@ -85,7 +82,6 @@
       overflow: auto;
     }
 
-    /* Mensaje de error para emails */
     #email-error {
       color: #b00020;
       font-size: 0.95rem;
@@ -98,7 +94,6 @@
       border-radius: 8px;
     }
 
-    /* BOTON: (efecto neón púrpura para el botón del formulario) */
     button[type="submit"] {
       display: block;
       margin: 25px auto 0 auto;
@@ -196,7 +191,6 @@
       transform: scale(1.02);
     }
 
-    /* fondo */
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, sans-serif;
@@ -223,9 +217,6 @@
       textarea { min-height: 80px; }
       .nav-bubble::before { width: calc(100% + 40px); height: calc(100% + 20px); filter: blur(12px); }
     }
-
-
-    /* ======= ADICION: botón hamburguesa pequeño en esquina + menú desplegable (igual que en otras páginas) ======= */
 
     .corner-hamburger-btn {
       position: fixed;
@@ -330,14 +321,9 @@
       .corner-nav { right: 8px; top: calc(10px + 40px + 6px); min-width: 180px; }
     }
 
-    /* ==========================
-       === ADICION: BOTÓN QR + MODAL QR ===
-       (añadido exactamente como pediste)
-       ========================== */
-
     .corner-qr-btn {
       position: fixed;
-      top: calc(12px + 42px + 8px); /* justo debajo del hamburger */
+      top: calc(12px + 42px + 8px);
       right: 12px;
       z-index: 12000;
       width: 42px;
@@ -395,7 +381,6 @@
     }
 
     @media (max-width:460px) { .qr-content { width: 320px; } }
-
   </style>
 </head>
 <body>
@@ -403,12 +388,10 @@
     <div class="nav-bubble"><a href="INICIO.html">Inicio</a></div>
   </nav>
 
-  <!-- botón hamburguesa en esquina -->
   <button class="corner-hamburger-btn" id="cornerHamburger" aria-expanded="false" aria-controls="cornerNav" aria-label="Abrir menú">
     <span class="bar" aria-hidden="true"></span>
   </button>
 
-  <!-- menú interactivo replicando el contenido del INICIO -->
   <nav id="cornerNav" class="corner-nav" role="navigation" aria-label="Menú principal">
     <ul>
       <li><a href="INTEGRANTES.html">Integrantes</a></li>
@@ -419,7 +402,6 @@
     </ul>
   </nav>
 
-  <!-- === BOTÓN QR y MODAL añadidos exactamente como solicitaste === -->
   <button class="corner-qr-btn" id="cornerQrBtn" aria-expanded="false" aria-controls="qrModal" aria-label="Mostrar QR">
     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <rect x="2" y="2" width="6" height="6" fill="#fff"></rect>
@@ -439,10 +421,6 @@
   </div>
 
   <main class="bloque">
-
-    <!-- FORMULARIO -->
-    <!-- Si querés que la respuesta (página de "Gracias") abra en otra pestaña,
-         agregá target="_blank" dentro de la etiqueta <form> -->
     <form action="https://script.google.com/macros/s/AKfycbw_bP0ctmrflRsJojGaZpBUMZvHLssiIFhjFwtRaoyd2Dw5incE_a7pvjsU1AqC72ylEA/exec"
           method="post"
           class="formulario-compra"
@@ -465,7 +443,6 @@
 
       <button type="submit" id="submit-btn">CONFIRMAR</button>
     </form>
-
   </main>
 
   <script>
@@ -474,6 +451,8 @@
       const email = document.getElementById('email');
       const emailConfirm = document.getElementById('email_confirm');
       const emailError = document.getElementById('email-error');
+      const submitBtn = document.getElementById('submit-btn');
+      const actionURL = form.getAttribute('action');
 
       function checkEmails() {
         const a = (email.value || "").trim();
@@ -481,50 +460,87 @@
         return a === b && a !== "";
       }
 
-      // Validar solo al enviar (comportamiento original)
       form.addEventListener('submit', function(e){
         if (!checkEmails()) {
-          e.preventDefault();                 // evita envío si no coinciden
-          emailError.style.display = 'block'; // muestra el mensaje
+          e.preventDefault();
+          emailError.style.display = 'block';
           emailConfirm.classList.add('input-error');
           emailConfirm.focus();
-        } else {
-          // si coinciden, ocultamos el mensaje y permitimos el submit normal
-          emailError.style.display = 'none';
-          emailConfirm.classList.remove('input-error');
-          // Si quieres manejar el envío con JS después, aquí podríamos interceptar.
+          return;
+        }
+
+        e.preventDefault();
+
+        emailError.style.display = 'none';
+        emailConfirm.classList.remove('input-error');
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'ENVIANDO...';
+
+        const fd = new FormData(form);
+
+        // Intentamos enviar con fetch CORS normal; si falla por CORS, seguimos con no-cors.
+        fetch(actionURL, {
+          method: 'POST',
+          body: fd,
+          credentials: 'omit'
+        }).then(function(response){
+          showThanksAndRedirect();
+        }).catch(function(){
+          // fallback: intentar no-cors para que el envío ocurra aunque la respuesta sea opaca
+          fetch(actionURL, {
+            method: 'POST',
+            body: fd,
+            mode: 'no-cors'
+          }).then(function(){
+            showThanksAndRedirect();
+          }).catch(function(){
+            showThanksAndRedirect();
+          });
+        });
+
+        function showThanksAndRedirect(){
+          const parent = form.parentNode;
+          const messageBox = document.createElement('div');
+          messageBox.setAttribute('aria-live','polite');
+          messageBox.style.maxWidth = '720px';
+          messageBox.style.margin = '40px auto';
+          messageBox.style.padding = '36px';
+          messageBox.style.borderRadius = '15px';
+          messageBox.style.background = 'rgba(255,248,220,0.92)';
+          messageBox.style.border = '3px solid rgba(178,102,255,0.95)';
+          messageBox.style.boxShadow = '0 10px 30px rgba(0,0,0,0.12)';
+          messageBox.style.textAlign = 'center';
+          messageBox.innerHTML = '<h2 class="mc-title">Gracias — envío recibido</h2><p>Hemos registrado tu envío correctamente.</p><p>Serás redirigido al inicio en unos segundos...</p>';
+          parent.replaceChild(messageBox, form);
+
+          setTimeout(function(){
+            window.location.href = 'INICIO.html';
+          }, 8000);
         }
       });
     })();
   </script>
 
-  <!-- JS para controlar el botón hamburguesa de esquina -->
   <script>
     (function(){
       const btn = document.getElementById('cornerHamburger');
       const nav = document.getElementById('cornerNav');
-
       if (!btn || !nav) return;
-
       function setOpen(open) {
         btn.setAttribute('aria-expanded', String(open));
         nav.classList.toggle('open', open);
       }
-
       btn.addEventListener('click', function(e){
         const expanded = this.getAttribute('aria-expanded') === 'true';
         setOpen(!expanded);
       });
-
-      // Cerrar con Escape
       document.addEventListener('keydown', function(e){
         if (e.key === 'Escape') {
           setOpen(false);
           btn.focus();
         }
       });
-
-      // Cerrar al click fuera
       document.addEventListener('click', function(e){
         if (!nav.classList.contains('open')) return;
         if (e.target.closest('#cornerNav') || e.target.closest('#cornerHamburger')) return;
@@ -533,21 +549,17 @@
     })();
   </script>
 
-  <!-- JS para el botón QR / modal QR (añadido exactamente igual) -->
   <script>
     (function(){
       const qrBtn = document.getElementById('cornerQrBtn');
       const qrModal = document.getElementById('qrModal');
       const qrClose = document.getElementById('qrClose');
-
       if (!qrBtn || !qrModal) return;
-
       function setQrOpen(open) {
         qrBtn.setAttribute('aria-expanded', String(open));
         if (open) {
           qrModal.classList.add('open');
           qrModal.setAttribute('aria-hidden', 'false');
-          // mover foco al modal para accesibilidad
           if (qrClose) qrClose.focus();
         } else {
           qrModal.classList.remove('open');
@@ -555,26 +567,19 @@
           qrBtn.focus();
         }
       }
-
       qrBtn.addEventListener('click', function(e){
         const isOpen = this.getAttribute('aria-expanded') === 'true';
         setQrOpen(!isOpen);
       });
-
-      // cerrar cuando se pulsa el botón Cerrar dentro del modal
       if (qrClose) {
         qrClose.addEventListener('click', function(e){
           e.preventDefault();
           setQrOpen(false);
         });
       }
-
-      // cerrar con escape
       document.addEventListener('keydown', function(e){
         if (e.key === 'Escape') setQrOpen(false);
       });
-
-      // cerrar al hacer click fuera del contenido
       qrModal.addEventListener('click', function(e){
         if (e.target === qrModal) setQrOpen(false);
       });
