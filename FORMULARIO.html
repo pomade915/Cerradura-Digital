@@ -454,6 +454,9 @@
       const submitBtn = document.getElementById('submit-btn');
       const actionURL = form.getAttribute('action');
 
+      let isSubmitting = false;
+      let thanksShown = false;
+
       function checkEmails() {
         const a = (email.value || "").trim();
         const b = (emailConfirm.value || "").trim();
@@ -461,6 +464,11 @@
       }
 
       form.addEventListener('submit', function(e){
+        if (isSubmitting) {
+          e.preventDefault();
+          return;
+        }
+
         if (!checkEmails()) {
           e.preventDefault();
           emailError.style.display = 'block';
@@ -471,6 +479,8 @@
 
         e.preventDefault();
 
+        isSubmitting = true;
+
         emailError.style.display = 'none';
         emailConfirm.classList.remove('input-error');
 
@@ -479,27 +489,22 @@
 
         const fd = new FormData(form);
 
-        // Intentamos enviar con fetch CORS normal; si falla por CORS, seguimos con no-cors.
+        // Enviar una sola vez usando no-cors para evitar duplicados por reintentos
         fetch(actionURL, {
           method: 'POST',
           body: fd,
-          credentials: 'omit'
-        }).then(function(response){
+          mode: 'no-cors'
+        }).then(function(){
           showThanksAndRedirect();
         }).catch(function(){
-          // fallback: intentar no-cors para que el envío ocurra aunque la respuesta sea opaca
-          fetch(actionURL, {
-            method: 'POST',
-            body: fd,
-            mode: 'no-cors'
-          }).then(function(){
-            showThanksAndRedirect();
-          }).catch(function(){
-            showThanksAndRedirect();
-          });
+          // aunque falle localmente, mostramos gracias y redirigimos (sin reintentar envío)
+          showThanksAndRedirect();
         });
 
         function showThanksAndRedirect(){
+          if (thanksShown) return;
+          thanksShown = true;
+
           const parent = form.parentNode;
           const messageBox = document.createElement('div');
           messageBox.setAttribute('aria-live','polite');
